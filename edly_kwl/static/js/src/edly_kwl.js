@@ -12,6 +12,14 @@ function EdlyKWLXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
+
+        $('.textarea').focus(function(){
+            $(this).parent('.edly_kwl_block .field-row').addClass('focus');
+        });
+
+        $('.textarea').blur(function() {
+            $(this).parent('.edly_kwl_block .field-row').removeClass('focus');
+        });
         $.post(_EdlyKWLXBlock.URL.SAVE_YOU_KNOW_ABOUT,JSON.stringify([{'text':'lorem ipsum','sort_order':1}])).done(function (res) {
             console.log(res);
         });
