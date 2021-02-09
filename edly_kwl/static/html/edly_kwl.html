@@ -1,4 +1,10 @@
 <div class="edly_kwl_block">
+    <script type="text/html" name="item-template">
+        <div class="field-row">
+            <span class="textarea" role="textbox" contenteditable></span>
+            <span class="drag"></span>
+        </div>
+    </script>
     <h1>Start of the course</h1>
     <div class="columns-holder">
         <div class="column">
@@ -8,15 +14,9 @@
                 <p><span class="info">For example: Pollution is leading to global warming.</span></p>
             </div>
             <div class="input_fields_wrap">
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
+                <div class="list-container-view knows" data-index="knows">
                 </div>
-                <div class="field-row">
-                        <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <button class="add_field_button"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                <button class="add_field_button" data-target="div.knows" data-index="knows"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
             </div>
         </div>
         <div class="column">
@@ -26,39 +26,21 @@
                 <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
             </div>
             <div class="input_fields_wrap">
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
+                <div class="list-container-view wonder" data-index="wonder">
                 </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
+                <button class="add_field_button" data-target="div.wonder" data-index="wonder"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+            </div>
+        </div>
+        <div class="column">
+            <h2>Learned</h2>
+            <div class="description">
+                <p>Step 02: List things you wonder about the topic of Environmental issues.</p>
+                <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
+            </div>
+            <div class="input_fields_wrap">
+                <div class="list-container-view learned" data-index="learned">
                 </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <div class="field-row">
-                    <span class="textarea" role="textbox" contenteditable></span>
-                    <span class="drag"></span>
-                </div>
-                <button class="add_field_button"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                <button class="add_field_button" data-target="div.learned" data-index="learned"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
             </div>
         </div>
     </div>
