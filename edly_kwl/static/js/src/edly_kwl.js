@@ -18,5 +18,13 @@ function EdlyKWLXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
+
+        $('.textarea').focus(function(){
+            $(this).parent('.edly_kwl_block .field-row').addClass('focus');
+        });
+
+        $('.textarea').blur(function() {
+            $(this).parent('.edly_kwl_block .field-row').removeClass('focus');
+        });
     });
 }

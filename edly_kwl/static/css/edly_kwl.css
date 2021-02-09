@@ -1,9 +1,111 @@
 /* CSS for EdlyKWLXBlock */
 
-.edly_kwl_block .count {
+.edly_kwl_block { overflow: hidden; }
+.edly_kwl_block h1 {
     font-weight: bold;
+    font-size: 70px;
+    line-height: 84px;
+    color: #337CB4;
+    margin: 0 0 20px;
 }
-
-.edly_kwl_block p {
+.edly_kwl_block .columns-holder {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
+.edly_kwl_block .column {
+    border-top: 5px solid #8BC5CB;
+    background: #F2F2F2;
+    padding: 32px 42px;
+    color:#2E2E2E;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0 0 0 6px;
+    width: 50%;
+    height: 654px;
+    overflow: hidden;
+}
+.edly_kwl_block .column:first-child { margin: 0; }
+.edly_kwl_block .column h2 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 0 0 27px;
+}
+.edly_kwl_block .column .description {
+    height: 90px;
+    overflow: hidden;
+    margin: 0 0 15px;
+}
+.edly_kwl_block .column p { margin: 0 0 8px; }
+.edly_kwl_block .column p span { font-style: italic; }
+.edly_kwl_block .input_fields_wrap {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 494px;
+}
+.edly_kwl_block .field-row {
+    margin: 0 0 15px;
+    background: #E2E2E2;
+    padding: 21px 19px;
+    display: flex;
+    align-items: center;
+}
+.edly_kwl_block .field-row .drag {
+    display: block;
+    cursor: grabbing;
+    width: 16px;
+    height: 26px;
+}
+.edly_kwl_block .field-row.focus .drag { cursor: not-allowed; }
+.edly_kwl_block .field-row .drag:after,
+.edly_kwl_block .field-row .drag:before {
+    content: "\f142";
+    font-family: 'FontAwesome';
+    font-size: 26px;
+    line-height: 26px;
+    margin: 0 2px;
+    color: #2E2E2E;
+}
+.edly_kwl_block .field-row.focus .drag:after,
+.edly_kwl_block .field-row.focus .drag:before { color: #C4C4C4; }
+.edly_kwl_block .field-row textarea,
+.edly_kwl_block .field-row .textarea {
+    background: #E2E2E2;
+    border: 0;
+    resize: none;
+    height: auto;
+    color: #000;
+    font-size: 18px;
+    line-height: 24px;
+    outline: none;
+    padding: 0 18px 0 0;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+}
+.textarea[contenteditable]:empty::before {
+    content: "Sentence";
+    color: #000;
+}
+::-webkit-input-placeholder { color: #000; }
+:-ms-input-placeholder { color: #000; }
+::placeholder { color: #000; }
+.edly_kwl_block button {
+    width: 200px;
+    height: 50px;
+    background: #8BC5CB;
+    border-radius: 6px;
+    border: 0;
+    outline: none;
+    letter-spacing: 0.01em;
+    font-size: 16px;
+    line-height: 50px;
+    overflow: hidden;
+    padding: 0 10px;
+    color: #2E2E2E;
     cursor: pointer;
+    text-transform: uppercase;
 }
+.edly_kwl_block button i { padding: 0 3px 0 0; }
+.edly_kwl_block button:hover { background: #81B7BC; }
