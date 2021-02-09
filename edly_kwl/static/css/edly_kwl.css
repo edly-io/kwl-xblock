@@ -1,0 +1,9 @@
+/* CSS for EdlyKWLXBlock */
+
+.edly_kwl_block .count {
+    font-weight: bold;
+}
+
+.edly_kwl_block p {
+    cursor: pointer;
+}
