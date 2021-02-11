@@ -10,8 +10,7 @@
         <div class="column">
             <h2>Know</h2>
             <div class="description">
-                <p>Step 01: List things you already know about the topic of environmental issues.</p>
-                <p><span class="info">For example: Pollution is leading to global warming.</span></p>
+                {{ self.config.knows_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
                 <div class="list-container-view knows" data-index="knows">
@@ -22,8 +21,7 @@
         <div class="column">
             <h2>Wonder</h2>
             <div class="description">
-                <p>Step 02: List things you wonder about the topic of Environmental issues.</p>
-                <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
+                {{ self.config.wonder_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
                 <div class="list-container-view wonder" data-index="wonder">
@@ -34,8 +32,7 @@
         <div class="column">
             <h2>Learned</h2>
             <div class="description">
-                <p>Step 02: List things you wonder about the topic of Environmental issues.</p>
-                <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
+                {{ self.config.learned_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
                 <div class="list-container-view learned" data-index="learned">

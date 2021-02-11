@@ -7,9 +7,9 @@ from web_fragments.fragment import Fragment
 from webob import Response
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import String, Scope, List
+from xblock.fields import String, Scope, List, Any
 
-from edly_kwl.schema import LIST_SCHEMA
+from edly_kwl.schema import LIST_SCHEMA, CONFIG_SCHEMA
 from edly_kwl.utils import render_template, resource_string
 
 
@@ -19,12 +19,26 @@ class EdlyKWLXBlock(XBlock):
     """
 
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
-                          default="Edly KWL",
-                          scope=Scope.content)
+                          default="Edly KWL", scope=Scope.settings)
     __list_know_about = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
     __list_wonder_about = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
     __list_learned_about = List(help="Enter details about Learned columns description", default=[],
                                 scope=Scope.user_info)
+
+    config = Any(scope=Scope.settings, default={
+        'knows_help_text': '''
+            <p>Step 01: List things you already know about the topic.</p>
+            <p><span class="info">For example: Pollution is leading to global warming.</span></p>
+        ''',
+        'wonder_help_text': '''
+            <p>Step 02: List things you wonder about the topic.</p>
+            <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
+        ''',
+        'learned_help_text': '''
+            <p>Step 01: List things you have learned</p>
+            <p><span class="info">For example: Pollution is leading to global warming.</span></p>
+        ''',
+    })
 
     @property
     def list_learned_about(self):
@@ -85,6 +99,17 @@ class EdlyKWLXBlock(XBlock):
     def save_what_you_wonder_about_list(self, data, suffix=''):
         return self.save_state('list_wonder_about', data)
 
+    @XBlock.json_handler
+    def update_settings(self, config, suffix=''):
+
+        try:
+            self.config = CONFIG_SCHEMA(config)
+            self.display_name = config['kwl_display_name']
+        except MultipleInvalid as e:
+            raise JsonHandlerError(500, str(e))
+
+        return config
+
     @XBlock.handler
     def get_state(self, request, suffix=''):
         state = self.get_context_data()
@@ -97,13 +122,20 @@ class EdlyKWLXBlock(XBlock):
         when viewing courses.
         """
 
-        html = render_template("static/html/edly_kwl.html",
-                               {"self": self})
+        html = render_template("static/html/edly_kwl.html", {"self": self})
         fragment = Fragment()
         fragment.add_content(html)
         fragment.add_css(resource_string("static/css/edly_kwl.css"))
         fragment.add_javascript(resource_string("static/js/src/edly_kwl.js"))
         fragment.initialize_js('EdlyKWLXBlock')
+        return fragment
+
+    def studio_view(self, context=None):
+        html = render_template("static/html/edly_kwl_studio.html", {"self": self})
+        fragment = Fragment()
+        fragment.add_content(html)
+        fragment.add_javascript(resource_string("static/js/src/edly_kwl_studio.js"))
+        fragment.initialize_js('EdlyKWLStudioXBlock')
         return fragment
 
     # TO-DO: change this to create the scenarios you'd like to see in the
