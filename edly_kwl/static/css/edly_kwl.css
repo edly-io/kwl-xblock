@@ -51,6 +51,7 @@
     display: flex;
     align-items: center;
 }
+.edly_kwl_block .field-row.editable { background: #fff2cc; }
 .edly_kwl_block .field-row .drag {
     display: block;
     cursor: grabbing;
@@ -67,6 +68,10 @@
     margin: 0 2px;
     color: #2E2E2E;
 }
+.edly_kwl_block .field-row.editable .drag:after,
+.edly_kwl_block .field-row.editable .drag:before { opacity: 0.3; }
+.edly_kwl_block .field-row.movable .drag:after,
+.edly_kwl_block .field-row.movable .drag:before { opacity: 1; }
 .edly_kwl_block .field-row.focus .drag:after,
 .edly_kwl_block .field-row.focus .drag:before { color: #C4C4C4; }
 .edly_kwl_block .field-row textarea,
@@ -84,9 +89,11 @@
     overflow: hidden;
     display: block;
 }
+.edly_kwl_block .field-row.editable .textarea { background: #fff2cc; }
 .textarea[contenteditable]:empty::before {
-    content: "Sentence";
+    content: "Enter description here";
     color: #000;
+    opacity: 0.2;
 }
 ::-webkit-input-placeholder { color: #000; }
 :-ms-input-placeholder { color: #000; }
@@ -109,3 +116,4 @@
 }
 .edly_kwl_block button i { padding: 0 3px 0 0; }
 .edly_kwl_block button:hover { background: #81B7BC; }
+.list-container-view { min-height: 80px; }
