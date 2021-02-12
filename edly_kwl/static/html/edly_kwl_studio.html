@@ -1,4 +1,4 @@
-<div class="edly-kwl-studio-view-container wrapper-comp-settings is-active editor-with-buttons" id="document-settings-tab">
+<div class="edly-kwl-studio-view-container wrapper-comp-settings is-active">
     <div class="user-inputs-and-validation">
         <div class="xblock-inputs editor_content_wrapper">
             <ul class="list-input settings-list">
@@ -32,7 +32,7 @@
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="enable-learned-column">Enable learned column.</label>
-                        <input id="enable-learned-column" form="edly-kwl-configs" type="checkbox" name="show_learned_column" {% if self.config.show_learned_column == 'on' %} checked="checked" {% endif %}>
+                        <input id="enable-learned-column" class="enable-learned-checkbox" form="edly-kwl-configs" type="checkbox" name="show_learned_column" {% if self.config.show_learned_column == 'on' %} checked="checked" {% endif %} style="height:20px;width:20px;">
                     </div>
                 </li>
             </ul>
