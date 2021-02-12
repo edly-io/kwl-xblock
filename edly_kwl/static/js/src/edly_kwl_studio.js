@@ -3,6 +3,7 @@ function EdlyKWLStudioXBlock(runtime, element) {
 
     _EdlyKWLStudioXBlock.element = element;
     _EdlyKWLStudioXBlock.runtime = runtime;
+    _EdlyKWLStudioXBlock.notify = typeof (runtime.notify) != 'undefined';
 
     // Add urls here.
     _EdlyKWLStudioXBlock.URL = {
@@ -33,9 +34,14 @@ EdlyKWLStudioXBlock.prototype.init = function ($) {
         var formData = _EdlyKWLStudioXBlock.toJson(this);
         var config = {
             success: function (res) {
-            //    TODO notify and close the studio view.
+                if (_EdlyKWLStudioXBlock.notify) {
+                    _EdlyKWLStudioXBlock.runtime.notify('save', {state: 'end'});
+                }
             }
         };
+        if (_EdlyKWLStudioXBlock.notify) {
+            _EdlyKWLStudioXBlock.runtime.notify('save', {state: 'start', message: 'Saving'});
+        }
         _EdlyKWLStudioXBlock.submit(_EdlyKWLStudioXBlock.URL.UPDATE_SETTINGS, formData, config);
         return false;
     });
@@ -44,7 +50,6 @@ EdlyKWLStudioXBlock.prototype.init = function ($) {
 
 EdlyKWLStudioXBlock.prototype.toJson = function (form) {
     var serializedArray = $(form).serializeArray(), data = {};
-    console.log(serializedArray)
     $.each(serializedArray, function (index, item) {
         data[item.name] = item.value
     });
@@ -63,4 +68,10 @@ EdlyKWLStudioXBlock.prototype.submit = function (url, formData, config = undefin
     };
     _config = $.extend({}, _config, config);
     $.ajax(_config);
+}
+
+EdlyKWLStudioXBlock.prototype.save = function () {
+    var _EdlyKWLStudioXBlock = this;
+
+    $(_EdlyKWLStudioXBlock.View.STUDIO_FORM).submit();
 }

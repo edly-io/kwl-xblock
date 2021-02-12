@@ -21,6 +21,7 @@ function EdlyKWLXBlock(runtime, element) {
         ADD_NEW_ITEM_BUTTON: 'button.add_field_button',
         LIST_VIEW_ITEM_TEMPLATE: 'script[name="item-template"]',
         LIST_VIEW_CONTAINER: '.list-container-view',
+        DROPPABLE_COLUMNS: '#learned-container, #wonder-container, #know-container',
     }
 
     _EdlyKWLXBlock.View = {
@@ -28,7 +29,8 @@ function EdlyKWLXBlock(runtime, element) {
         WONDER_ITEMS_DIV: $(_EdlyKWLXBlock.Selector.WONDER_ITEMS, element),
         LEARNED_ITEMS_DIV: $(_EdlyKWLXBlock.Selector.LEARNED_ITEMS, element),
         ADD_NEW_ITEM_BUTTON: $(_EdlyKWLXBlock.Selector.ADD_NEW_ITEM_BUTTON, element),
-        LIST_VIEW_ITEM_TEMPLATE: $($(_EdlyKWLXBlock.Selector.LIST_VIEW_ITEM_TEMPLATE, element).clone())
+        LIST_VIEW_ITEM_TEMPLATE: $($(_EdlyKWLXBlock.Selector.LIST_VIEW_ITEM_TEMPLATE, element).clone()),
+        DROPPABLE_COLUMNS: $(_EdlyKWLXBlock.Selector.DROPPABLE_COLUMNS, element)
     }
 
     function getState(key) {
@@ -54,7 +56,7 @@ function EdlyKWLXBlock(runtime, element) {
             _EdlyKWLXBlock.updateListView(element, _EdlyKWLXBlock.View.LEARNED_ITEMS_DIV, getState('learned'));
         });
 
-        $('#learned-container, #wonder-container, #know-container' ).droppable( {
+        _EdlyKWLXBlock.View.DROPPABLE_COLUMNS.droppable( {
             hoverClass: 'hovered',
             drop: function(event, ui) {
                 _EdlyKWLXBlock.handleItemDrop(event, ui);
