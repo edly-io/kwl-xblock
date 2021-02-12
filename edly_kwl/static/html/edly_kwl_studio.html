@@ -1,32 +1,46 @@
-<div class="edly-kwl-studio-view-container">
+<div class="edly-kwl-studio-view-container wrapper-comp-settings is-active editor-with-buttons" id="document-settings-tab">
+    <div class="user-inputs-and-validation">
+        <div class="xblock-inputs editor_content_wrapper">
+            <ul class="list-input settings-list">
+                <form id="edly-kwl-configs" novalidate></form>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label class="label setting-label" for="kwl-display-name">Display Name</label>
+                        <input id="kwl-display-name" name="kwl_display_name" form="edly-kwl-configs" value="{{ self.display_name.strip }}"/>
+                    </div>
+                    <span class="tip setting-help">This name appears in the horizontal navigation at the top of the page.</span>
+                </li>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="knows-help-text">Enter knows help text.</label>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="knows-help-text" name="knows_help_text" form="edly-kwl-configs">{{ self.config.knows_help_text.strip }}</textarea>
+                    </div>
 
-    <form id="edly-kwl-configs" novalidate></form>
-
-    <div>
-        <label for="kwl-display-name">Enter knows help text.</label>
-        <input id="kwl-display-name" name="kwl_display_name" form="edly-kwl-configs" value="{{ self.display_name.strip }}"/>
-    </div>
-
-    <div>
-        <label for="knows-help-text">Enter knows help text.</label>
-        <textarea id="knows-help-text" name="knows_help_text" form="edly-kwl-configs">{{ self.config.knows_help_text.strip }}</textarea>
-    </div>
-
-    <div>
-        <label for="wonder-help-text">Enter wonder help text.</label>
-        <textarea id="wonder-help-text" name="wonder_help_text" form="edly-kwl-configs">{{ self.config.wonder_help_text.strip }}</textarea>
-    </div>
-
-    <div>
-        <label for="learned-help-text">Enter learned help text.</label>
-        <textarea id="learned-help-text" name="learned_help_text" form="edly-kwl-configs">{{ self.config.learned_help_text.strip }}</textarea>
-    </div>
-    <div>
-        <label for="enable-learned-column">Enable learned column.</label>
-        <input id="enable-learned-column" form="edly-kwl-configs" type="checkbox" name="show_learned_column" {% if self.config.show_learned_column == 'on' %} checked="checked" {% endif %}>
+                </li>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="wonder-help-text">Enter wonder help text.</label>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="wonder-help-text" name="wonder_help_text" form="edly-kwl-configs">{{ self.config.wonder_help_text.strip }}</textarea>
+                    </div>
+                </li>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="learned-help-text">Enter learned help text.</label>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="learned-help-text" name="learned_help_text" form="edly-kwl-configs">{{ self.config.learned_help_text.strip }}</textarea>
+                    </div>
+                </li>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="enable-learned-column">Enable learned column.</label>
+                        <input id="enable-learned-column" form="edly-kwl-configs" type="checkbox" name="show_learned_column" {% if self.config.show_learned_column == 'on' %} checked="checked" {% endif %}>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="xblock-actions">
+        <span class="xblock-editor-error-message"></span>
         <ul>
             <li class="action-item">
                 <input id="msp-submit-options" type="submit" class="button action-primary save-button" value="Save"

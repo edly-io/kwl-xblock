@@ -20,10 +20,10 @@ class EdlyKWLXBlock(XBlock):
 
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
                           default="Edly KWL", scope=Scope.settings)
-    __list_know_about = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
-    __list_wonder_about = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
-    __list_learned_about = List(help="Enter details about Learned columns description", default=[],
-                                scope=Scope.user_info)
+    __know_items = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
+    __wonder_items = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
+    __learned_items = List(help="Enter details about Learned columns description", default=[],
+                           scope=Scope.user_info)
 
     config = Any(scope=Scope.settings, default={
         'knows_help_text': '''
@@ -41,33 +41,35 @@ class EdlyKWLXBlock(XBlock):
     })
 
     @property
-    def list_learned_about(self):
-        return self.__list_wonder_about
+    def learned_items(self):
+        return self.__learned_items
 
-    @list_learned_about.setter
-    def list_learned_about(self, val):
-        self.__list_learned_about = val
-
-    @property
-    def list_wonder_about(self):
-        return self.__list_wonder_about
-
-    @list_wonder_about.setter
-    def list_wonder_about(self, val):
-        self.__list_wonder_about = val
+    @learned_items.setter
+    def learned_items(self, val):
+        self.__learned_items = val
 
     @property
-    def list_know_about(self):
-        return self.__list_know_about
+    def wonder_items(self):
+        return self.__wonder_items
 
-    @list_know_about.setter
-    def list_know_about(self, val):
-        self.__list_know_about = val
+    @wonder_items.setter
+    def wonder_items(self, val):
+        self.__wonder_items = val
+
+    @property
+    def know_items(self):
+        return self.__know_items
+
+    @know_items.setter
+    def know_items(self, val):
+        self.__know_items = val
 
     def get_context_data(self):
-        return dict(knows=self.__list_know_about, wonder=self.__list_wonder_about, learned=self.__list_learned_about)
+        return dict(knows=self.__know_items, wonder=self.__wonder_items, learned=self.__learned_items,
+                    show_learned_column=self.config.get('show_learned_column', False))
 
-    def json_response(self, payload):
+    @staticmethod
+    def json_response(payload):
         """
         This function is to convert dictionary to json http response object.
         :param payload: dict
@@ -88,16 +90,16 @@ class EdlyKWLXBlock(XBlock):
         return self.get_context_data()
 
     @XBlock.json_handler
-    def save_what_you_know_about_list(self, data, suffix=''):
-        return self.save_state('list_know_about', data)
+    def save_know_items(self, data, suffix=''):
+        return self.save_state('know_items', data)
 
     @XBlock.json_handler
-    def save_what_you_learned_about_list(self, data, suffix=''):
-        return self.save_state('list_learned_about', data)
+    def save_learned_items(self, data, suffix=''):
+        return self.save_state('learned_items', data)
 
     @XBlock.json_handler
-    def save_what_you_wonder_about_list(self, data, suffix=''):
-        return self.save_state('list_wonder_about', data)
+    def save_wonder_items(self, data, suffix=''):
+        return self.save_state('wonder_items', data)
 
     @XBlock.json_handler
     def update_settings(self, config, suffix=''):
@@ -127,6 +129,8 @@ class EdlyKWLXBlock(XBlock):
         fragment.add_content(html)
         fragment.add_css(resource_string("static/css/edly_kwl.css"))
         fragment.add_javascript(resource_string("static/js/src/edly_kwl.js"))
+        fragment.add_javascript_url("https://code.jquery.com/jquery-3.2.1.min.js")
+        fragment.add_javascript_url("https://code.jquery.com/ui/1.9.0/jquery-ui.min.js")
         fragment.initialize_js('EdlyKWLXBlock')
         return fragment
 
@@ -134,6 +138,7 @@ class EdlyKWLXBlock(XBlock):
         html = render_template("static/html/edly_kwl_studio.html", {"self": self})
         fragment = Fragment()
         fragment.add_content(html)
+        fragment.add_css(resource_string("static/css/edly_kwl_studio.css"))
         fragment.add_javascript(resource_string("static/js/src/edly_kwl_studio.js"))
         fragment.initialize_js('EdlyKWLStudioXBlock')
         return fragment

@@ -1,6 +1,0 @@
-coverage==5.2
-Django==2.2.14
-edx-lint==1.5.0
-lxml==4.5.2
-web-fragments==0.3.2
-XBlock==1.4.0
