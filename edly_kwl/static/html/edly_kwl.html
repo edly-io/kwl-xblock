@@ -1,10 +1,11 @@
-<div class="edly_kwl_block">
+<div class="edly_kwl_block" id="kwl_content">
     <script type="text/html" name="item-template">
         <div class="field-row">
-            <span class="textarea" role="textbox" contenteditable></span>
+            <span class="textarea" data-type="init" role="textbox" contenteditable></span>
             <span class="drag"></span>
         </div>
     </script>
+    {% with learn_column_visible=self.config.show_learned_column %}
     <h1>Start of the course</h1>
     <div class="columns-holder">
         <div class="column">
@@ -13,9 +14,11 @@
                 {{ self.config.knows_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
-                <div class="list-container-view knows" data-index="knows">
+                <div class="list-container-view" data-index="knows" id="know-container">
                 </div>
-                <button class="add_field_button" data-target="div.knows" data-index="knows"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                {% if not learn_column_visible %}
+                    <button class="add_field_button" data-target="#know-container" data-index="knows"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                {% endif %}
             </div>
         </div>
         <div class="column">
@@ -24,21 +27,26 @@
                 {{ self.config.wonder_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
-                <div class="list-container-view wonder" data-index="wonder">
+                <div class="list-container-view" data-index="wonder" id="wonder-container">
                 </div>
-                <button class="add_field_button" data-target="div.wonder" data-index="wonder"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                {% if not learn_column_visible %}
+                    <button class="add_field_button" data-target="#wonder-container" data-index="wonder"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                {% endif %}
             </div>
         </div>
+        {% if learn_column_visible %}
         <div class="column">
             <h2>Learned</h2>
             <div class="description">
                 {{ self.config.learned_help_text|safe }}
             </div>
             <div class="input_fields_wrap">
-                <div class="list-container-view learned" data-index="learned">
+                <div class="list-container-view" data-index="learned" id="learned-container">
                 </div>
-                <button class="add_field_button" data-target="div.learned" data-index="learned"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
+                <button class="add_field_button" data-target="#learned-container" data-index="learned"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</button>
             </div>
         </div>
+        {% endif %}
     </div>
+    {% endwith %}
 </div>

@@ -25,14 +25,19 @@ def package_data(pkg, roots):
 
 setup(
     name='edly_kwl-xblock',
-    version='0.1',
-    description='edly_kwl XBlock',   # TODO: write a better description.
-    license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
+    author='Edly Enterprise',
+    version='0.1.0',
+    description='edly_kwl XBlock allows users to enter points they already know & wonder '
+                'they\'ll learn from course and validate those points at the end of the course',
+    license='',
     packages=[
         'edly_kwl',
     ],
     install_requires=[
         'XBlock',
+        'lxml==4.5.0',
+        'voluptuous==0.11.7',
+        'web-fragments==0.3.2'
     ],
     entry_points={
         'xblock.v1': [
