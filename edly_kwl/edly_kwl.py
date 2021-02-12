@@ -129,8 +129,6 @@ class EdlyKWLXBlock(XBlock):
         fragment.add_content(html)
         fragment.add_css(resource_string("static/css/edly_kwl.css"))
         fragment.add_javascript(resource_string("static/js/src/edly_kwl.js"))
-        fragment.add_javascript_url("https://code.jquery.com/jquery-3.2.1.min.js")
-        fragment.add_javascript_url("https://code.jquery.com/ui/1.9.0/jquery-ui.min.js")
         fragment.initialize_js('EdlyKWLXBlock')
         return fragment
 
