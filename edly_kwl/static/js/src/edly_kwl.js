@@ -141,6 +141,7 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     var itemView = $(_EdlyKWLXBlock.View.LIST_VIEW_ITEM_TEMPLATE.text());
     var editable = $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, itemView);
     $(itemView).attr("id", data.index+$(target).children().length);
+    $(itemView).addClass("editable");
     editable.attr({'data-index': data.index, 'data-type': data.index});
     editable.focusout(function (e) {
         _EdlyKWLXBlock.save(this);
