@@ -1,7 +1,9 @@
 """Know Wonder Learn Activity XBlock"""
 import datetime
-import json
+from json import JSONEncoder
 
+from django.apps import apps
+from opaque_keys.edx.keys import CourseKey
 from voluptuous import MultipleInvalid
 from web_fragments.fragment import Fragment
 from webob import Response
@@ -9,6 +11,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import String, Scope, List, Any
 
+from edly_kwl.kwl_djangoapp.utils import send_kwl_state_update_signal
 from edly_kwl.schema import LIST_SCHEMA, CONFIG_SCHEMA
 from edly_kwl.utils import render_template, resource_string
 
@@ -20,10 +23,6 @@ class EdlyKWLXBlock(XBlock):
 
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
                           default="Edly KWL", scope=Scope.settings)
-    __know_items = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
-    __wonder_items = List(help="Enter details about Know columns description", default=[], scope=Scope.user_info)
-    __learned_items = List(help="Enter details about Learned columns description", default=[],
-                           scope=Scope.user_info)
 
     config = Any(scope=Scope.settings, default={
         'knows_help_text': '''
@@ -40,32 +39,37 @@ class EdlyKWLXBlock(XBlock):
         ''',
     })
 
-    @property
-    def learned_items(self):
-        return self.__learned_items
-
-    @learned_items.setter
-    def learned_items(self, val):
-        self.__learned_items = val
+    def get_kel_data(self):
+        KWLModel = apps.get_model('kwl_djangoapp', 'KWLModel')
+        return KWLModel.objects.filter(course_id=CourseKey.from_string(str(self.course_id)),
+                                       user=self.scope_ids.user_id)
 
     @property
-    def wonder_items(self):
-        return self.__wonder_items
+    def list_learned_about(self):
+        return list(self.get_kel_data().filter(type='l'))
 
-    @wonder_items.setter
-    def wonder_items(self, val):
-        self.__wonder_items = val
+    @list_learned_about.setter
+    def list_learned_about(self, val):
+        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='l')
 
     @property
-    def know_items(self):
-        return self.__know_items
+    def list_wonder_about(self):
+        return list(self.get_kel_data().filter(type='w'))
 
-    @know_items.setter
-    def know_items(self, val):
-        self.__know_items = val
+    @list_wonder_about.setter
+    def list_wonder_about(self, val):
+        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='w')
+
+    @property
+    def list_know_about(self):
+        return list(self.get_kel_data().filter(type='k'))
+
+    @list_know_about.setter
+    def list_know_about(self, val):
+        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='k')
 
     def get_context_data(self):
-        return dict(knows=self.__know_items, wonder=self.__wonder_items, learned=self.__learned_items,
+        return dict(knows=self.list_know_about, wonder=self.list_wonder_about, learned=self.list_learned_about,
                     show_learned_column=self.config.get('show_learned_column', False))
 
     @staticmethod
@@ -75,12 +79,11 @@ class EdlyKWLXBlock(XBlock):
         :param payload: dict
         :return: Response
         """
+        class CustomJSONEncoder(JSONEncoder):
+            def default(self, o):
+                return o.__dict__
 
-        def default(o):
-            if isinstance(o, (datetime.date, datetime.datetime)):
-                return o.strftime("%d/%m/%y")
-
-        return Response(json.dumps(payload, default=default), content_type='application/json', charset='UTF-8')
+        return Response(CustomJSONEncoder().encode(payload), content_type='application/json', charset='UTF-8')
 
     def save_state(self, state_attr_name, payload):
         try:
@@ -90,16 +93,16 @@ class EdlyKWLXBlock(XBlock):
         return self.get_context_data()
 
     @XBlock.json_handler
-    def save_know_items(self, data, suffix=''):
-        return self.save_state('know_items', data)
+    def save_what_you_know_about_list(self, data, suffix=''):
+        return self.json_response(self.save_state('list_know_about', data))
 
     @XBlock.json_handler
-    def save_learned_items(self, data, suffix=''):
-        return self.save_state('learned_items', data)
+    def save_what_you_learned_about_list(self, data, suffix=''):
+        return self.json_response(self.save_state('list_learned_about', data))
 
     @XBlock.json_handler
-    def save_wonder_items(self, data, suffix=''):
-        return self.save_state('wonder_items', data)
+    def save_what_you_wonder_about_list(self, data, suffix=''):
+        return self.json_response(self.save_state('list_wonder_about', data))
 
     @XBlock.json_handler
     def update_settings(self, config, suffix=''):

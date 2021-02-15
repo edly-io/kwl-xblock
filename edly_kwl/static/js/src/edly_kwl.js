@@ -8,9 +8,9 @@ function EdlyKWLXBlock(runtime, element) {
     // Add urls here.
     _EdlyKWLXBlock.URL = {
         GET_STATE: runtime.handlerUrl(element, 'get_state'),
-        SAVE_KNOW_ITEMS_LIST: runtime.handlerUrl(element, 'save_know_items'),
-        SAVE_LEARNED_ITEMS_LIST: runtime.handlerUrl(element, 'save_learned_items'),
-        SAVE_WONDER_ITEMS_LIST: runtime.handlerUrl(element, 'save_wonder_items'),
+        SAVE_KNOW_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_know_about_list'),
+        SAVE_LEARNED_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_learned_about_list'),
+        SAVE_WONDER_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_wonder_about_list'),
     }
 
     _EdlyKWLXBlock.Selector = {
@@ -89,15 +89,16 @@ EdlyKWLXBlock.prototype.updateState = function (cb) {
 EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
     var _EdlyKWLXBlock = this;
     $(view).empty();
+
     $.each(list, function (index, item) {
         var itemView = $(_EdlyKWLXBlock.View.LIST_VIEW_ITEM_TEMPLATE.text());
         var editable = $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, itemView);
         var viewIndex = $(view).data('index')
-        editable.text(item.text).attr({'data-index': viewIndex, 'data-type': item.type});
+        editable.text(item.content).attr({'data-index': viewIndex, 'data-type': item.type});
         $(itemView).attr("id", viewIndex+index)
         var divClassToAdd = "editable"
         // Learned items shouldn't be dragged
-        if (_EdlyKWLXBlock.showLearned && item.type != 'learned') {
+        if (_EdlyKWLXBlock.showLearned && item.type != 'l') {
             _EdlyKWLXBlock.makeDraggable(itemView)
             divClassToAdd = "movable"
         }
@@ -130,9 +131,9 @@ EdlyKWLXBlock.prototype.toJson = function (listView) {
     var _EdlyKWLXBlock = this;
     var list = [];
     $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, listView).each(function (index, item) {
-        var text = $(this).text().trim();
-        if (text)
-            list.push({sort_order: index, text: text, type: $(this).attr("data-type")});
+        var content = $(this).text().trim();
+        if (content)
+            list.push({sort_order: index, content: content});
     });
     return list;
 }
@@ -161,11 +162,10 @@ EdlyKWLXBlock.prototype.save = function (targetElement) {
 EdlyKWLXBlock.prototype.saveList = function (targetListView) {
     var _EdlyKWLXBlock = this;
     var data = $(targetListView).data();
-
     var url = data.saveUrl, index = data.index;
     var payload = _EdlyKWLXBlock.toJson(targetListView);
     _EdlyKWLXBlock.submit(url, payload, function (res) {
-        _EdlyKWLXBlock.state[index] = payload;
+        _EdlyKWLXBlock.state[index] = res[index];
         _EdlyKWLXBlock.updateListView(_EdlyKWLXBlock.element, targetListView, _EdlyKWLXBlock.state[index]);
     });
 }
@@ -200,10 +200,10 @@ EdlyKWLXBlock.prototype.handleItemDrop = function (event, ui) {
     $(dropList).append(clone);
     // Reverse the drop region, to make it draggable again.
     _EdlyKWLXBlock.makeDraggable(clone, dragListID)
-
     _EdlyKWLXBlock.saveList(dropList)
-    $.when($(draggedItem).remove()).then(function(_EdlyKWLXBlock){
-        _EdlyKWLXBlock.saveList(dragItemList)
-    })
 
+    $("#"+draggedItem.attr("id")).on("remove", function () {
+    	_EdlyKWLXBlock.saveList(dragItemList)
+    })
+    $(draggedItem).remove()
 }

@@ -37,7 +37,8 @@ setup(
         'XBlock',
         'lxml==4.5.0',
         'voluptuous==0.11.7',
-        'web-fragments==0.3.2'
+        'web-fragments==0.3.2',
+        'edx-opaque-keys==2.0.2'
     ],
     entry_points={
         'xblock.v1': [
