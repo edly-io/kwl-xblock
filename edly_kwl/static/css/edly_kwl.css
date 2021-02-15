@@ -55,7 +55,7 @@
 .edly_kwl_block .field-row .drag {
     display: block;
     cursor: grabbing;
-    width: 16px;
+    width: 20px;
     height: 26px;
 }
 .edly_kwl_block .field-row.focus .drag { cursor: not-allowed; }
@@ -114,7 +114,8 @@
     color: #2E2E2E;
     cursor: pointer;
     text-transform: uppercase;
+    text-shadow: none;
 }
 .edly_kwl_block button i { padding: 0 3px 0 0; }
-.edly_kwl_block button:hover { background: #81B7BC; }
+.edly_kwl_block button:hover { background: #76A4A8; }
 .list-container-view { min-height: 80px; }
