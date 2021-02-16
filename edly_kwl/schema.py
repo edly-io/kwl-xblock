@@ -2,7 +2,10 @@ from voluptuous import Required, Schema, Optional
 
 LIST_SCHEMA = Schema([
     Schema({
+        Required('id'): int,
+        Required('type'): str,
         Required('content'): str,
+        Optional('dropped_in'): str,
         Required('sort_order'): int,
     })
 ])
