@@ -9,7 +9,7 @@ from web_fragments.fragment import Fragment
 from webob import Response
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import String, Scope, List, Any
+from xblock.fields import String, Scope, Any
 
 from edly_kwl.kwl_djangoapp.utils import send_kwl_state_update_signal
 from edly_kwl.schema import LIST_SCHEMA, CONFIG_SCHEMA
@@ -23,6 +23,7 @@ class EdlyKWLXBlock(XBlock):
 
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
                           default="Edly KWL", scope=Scope.settings)
+
 
     config = Any(scope=Scope.settings, default={
         'knows_help_text': '''
@@ -45,32 +46,25 @@ class EdlyKWLXBlock(XBlock):
                                        user=self.scope_ids.user_id)
 
     @property
-    def list_learned_about(self):
-        return list(self.get_kel_data().filter(type='l'))
+    def show_learned_column(self):
+        return self.config.get('show_learned_column', False)
 
-    @list_learned_about.setter
-    def list_learned_about(self, val):
-        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='l')
+    @property
+    def list_learned_about(self):
+        return list(self.get_kel_data().filter(dropped_in='l'))
 
     @property
     def list_wonder_about(self):
-        return list(self.get_kel_data().filter(type='w'))
-
-    @list_wonder_about.setter
-    def list_wonder_about(self, val):
-        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='w')
+        return list(self.get_kel_data().filter(dropped_in='w'))
 
     @property
     def list_know_about(self):
-        return list(self.get_kel_data().filter(type='k'))
-
-    @list_know_about.setter
-    def list_know_about(self, val):
-        send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=val, type='k')
+        return list(self.get_kel_data().filter(dropped_in='k'))
 
     def get_context_data(self):
         return dict(knows=self.list_know_about, wonder=self.list_wonder_about, learned=self.list_learned_about,
-                    show_learned_column=self.config.get('show_learned_column', False))
+                    show_learned_column=self.show_learned_column)
+
 
     @staticmethod
     def json_response(payload):
@@ -80,29 +74,22 @@ class EdlyKWLXBlock(XBlock):
         :return: Response
         """
         class CustomJSONEncoder(JSONEncoder):
-            def default(self, o):
-                return o.__dict__
-
+            def default(self, value):
+                if isinstance(value, datetime.date):
+                    return dict(year=value.year, month=value.month, day=value.day)
+                return value.__dict__
         return Response(CustomJSONEncoder().encode(payload), content_type='application/json', charset='UTF-8')
 
-    def save_state(self, state_attr_name, payload):
+    def update_state(self, payload):
         try:
-            setattr(self, state_attr_name, LIST_SCHEMA(payload))
+            send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=payload)
         except MultipleInvalid as e:
             raise JsonHandlerError(500, str(e))
         return self.get_context_data()
 
     @XBlock.json_handler
-    def save_what_you_know_about_list(self, data, suffix=''):
-        return self.json_response(self.save_state('list_know_about', data))
-
-    @XBlock.json_handler
-    def save_what_you_learned_about_list(self, data, suffix=''):
-        return self.json_response(self.save_state('list_learned_about', data))
-
-    @XBlock.json_handler
-    def save_what_you_wonder_about_list(self, data, suffix=''):
-        return self.json_response(self.save_state('list_wonder_about', data))
+    def create_update_item(self, data, suffix=''):
+        return self.json_response(self.update_state(data))
 
     @XBlock.json_handler
     def update_settings(self, config, suffix=''):

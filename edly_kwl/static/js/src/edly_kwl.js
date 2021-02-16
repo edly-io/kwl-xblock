@@ -8,9 +8,7 @@ function EdlyKWLXBlock(runtime, element) {
     // Add urls here.
     _EdlyKWLXBlock.URL = {
         GET_STATE: runtime.handlerUrl(element, 'get_state'),
-        SAVE_KNOW_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_know_about_list'),
-        SAVE_LEARNED_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_learned_about_list'),
-        SAVE_WONDER_ITEMS_LIST: runtime.handlerUrl(element, 'save_what_you_wonder_about_list'),
+        CREATE_UPDATE_ITEM: runtime.handlerUrl(element, 'create_update_item'),
     }
 
     _EdlyKWLXBlock.Selector = {
@@ -72,9 +70,9 @@ EdlyKWLXBlock.prototype.init = function () {
         _EdlyKWLXBlock.addListItem(this);
     });
 
-    $(_EdlyKWLXBlock.View.KNOW_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.SAVE_KNOW_ITEMS_LIST);
-    $(_EdlyKWLXBlock.View.WONDER_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.SAVE_WONDER_ITEMS_LIST);
-    $(_EdlyKWLXBlock.View.LEARNED_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.SAVE_LEARNED_ITEMS_LIST);
+    $(_EdlyKWLXBlock.View.KNOW_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.CREATE_UPDATE_ITEM);
+    $(_EdlyKWLXBlock.View.WONDER_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.CREATE_UPDATE_ITEM);
+    $(_EdlyKWLXBlock.View.LEARNED_ITEMS_DIV).data('save-url', _EdlyKWLXBlock.URL.CREATE_UPDATE_ITEM);
 }
 
 EdlyKWLXBlock.prototype.updateState = function (cb) {
@@ -94,8 +92,9 @@ EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
         var itemView = $(_EdlyKWLXBlock.View.LIST_VIEW_ITEM_TEMPLATE.text());
         var editable = $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, itemView);
         var viewIndex = $(view).data('index')
-        editable.text(item.content).attr({'data-index': viewIndex, 'data-type': item.type});
-        $(itemView).attr("id", viewIndex+index)
+        editable.text(item.content).attr({'data-index': viewIndex, 'data-type': item.type,
+                                          'data-id': item.id, 'data-dropped': item.dropped_in});
+        $(itemView).attr("id", index)
         var divClassToAdd = "editable"
         // Learned items shouldn't be dragged
         if (_EdlyKWLXBlock.showLearned && item.type != 'l') {
@@ -127,15 +126,11 @@ EdlyKWLXBlock.prototype.makeDraggable = function (item, targetDivID="learned-con
     });
 }
 
-EdlyKWLXBlock.prototype.toJson = function (listView) {
+EdlyKWLXBlock.prototype.toItemJson = function (targetItem) {
     var _EdlyKWLXBlock = this;
-    var list = [];
-    $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, listView).each(function (index, item) {
-        var content = $(this).text().trim();
-        if (content)
-            list.push({sort_order: index, content: content});
-    });
-    return list;
+    return {'sort_order': 1, content: targetItem.textContent.trim(),
+            type: $(targetItem).attr("data-type"), id: $(targetItem).attr("data-id"),
+            "dropped_in": $(targetItem).attr("data-dropped")}
 }
 
 EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
@@ -145,7 +140,8 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     var editable = $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, itemView);
     $(itemView).attr("id", data.index+$(target).children().length);
     $(itemView).addClass("editable");
-    editable.attr({'data-index': data.index, 'data-type': data.index});
+    var index = data.index;
+    editable.attr({'data-index': index, 'data-type': index.charAt(0)});
     editable.focusout(function (e) {
         _EdlyKWLXBlock.save(this);
     });
@@ -156,14 +152,14 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
 EdlyKWLXBlock.prototype.save = function (targetElement) {
     var _EdlyKWLXBlock = this;
     var listView = $(targetElement).closest(_EdlyKWLXBlock.Selector.LIST_VIEW_CONTAINER);
-    _EdlyKWLXBlock.saveList(listView)
+    _EdlyKWLXBlock.saveItem(listView, targetElement)
 }
 
-EdlyKWLXBlock.prototype.saveList = function (targetListView) {
+EdlyKWLXBlock.prototype.saveItem = function (targetListView, targetElement) {
     var _EdlyKWLXBlock = this;
     var data = $(targetListView).data();
     var url = data.saveUrl, index = data.index;
-    var payload = _EdlyKWLXBlock.toJson(targetListView);
+    var payload = _EdlyKWLXBlock.toItemJson(targetElement);
     _EdlyKWLXBlock.submit(url, payload, function (res) {
         _EdlyKWLXBlock.state[index] = res[index];
         _EdlyKWLXBlock.updateListView(_EdlyKWLXBlock.element, targetListView, _EdlyKWLXBlock.state[index]);
@@ -181,29 +177,46 @@ EdlyKWLXBlock.prototype.handleItemDragStart = function (event, ui) {
     ui.helper.css({'width' : $(this).css('width'), 'height' : $(this).css('height')});
 }
 
+EdlyKWLXBlock.prototype.getObject = function(el) {
+    if (typeof jQuery === "function" && el instanceof jQuery) {
+        el = el[0];
+    }
+    return el
+}
+
+EdlyKWLXBlock.prototype.isDropRestricted = function(dragList, dropList) {
+    var _EdlyKWLXBlock = this;
+
+    var droppedIndex = $(dropList).attr("data-index")
+    var draggedIndex = $(dragList).attr("data-index")
+    var restricedDrops = "knows wonder"
+    var dragListID = $(dragList).attr("id"), dropListID = $(dropList).attr("id")
+    // restrict same column drop or swap between Know & Wonder items
+    return  (dragListID === dropListID ||
+            (restricedDrops.includes(droppedIndex) && restricedDrops.includes(draggedIndex)))
+}
+
 EdlyKWLXBlock.prototype.handleItemDrop = function (event, ui) {
-    console.log("Handle card drop")
     var _EdlyKWLXBlock = this;
     var draggedItem = ui.draggable;
-    var dragItemList = draggedItem.parent();
-    var dropList = event.target;
-    var dragListID = $(dragItemList).attr("id"), dropListID = $(dropList).attr("id")
 
-    if (dragListID === dropListID) {
+    var dragItemList = _EdlyKWLXBlock.getObject(draggedItem.parent());
+    var dropList = event.target;
+    var clone = $(draggedItem).clone();
+    var cloneContext = _EdlyKWLXBlock.getObject(clone)
+    var editable = _EdlyKWLXBlock.getObject($(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, cloneContext));
+    $(editable).attr("data-dropped", droppedIn)
+    if (_EdlyKWLXBlock.isDropRestricted(dragItemList, dropList)) {
         draggedItem.draggable('option', 'revert', true);
         return
     }
-    console.log(draggedItem.attr("id"));
-    var clone = $(draggedItem).clone();
-    draggedItem.draggable('option', 'revert', false);
-    $(draggedItem).remove()
-    $(dropList).append(clone);
-    // Reverse the drop region, to make it draggable again.
-    _EdlyKWLXBlock.makeDraggable(clone, dragListID)
-    _EdlyKWLXBlock.saveList(dropList)
 
-    $("#"+draggedItem.attr("id")).on("remove", function () {
-    	_EdlyKWLXBlock.saveList(dragItemList)
-    })
+    var droppedIn = $(dropList).attr("data-index").charAt(0)
+    $(editable).attr("data-dropped", droppedIn)
+    $(dropList).append(clone);
+    draggedItem.draggable('option', 'revert', false);
+
+    _EdlyKWLXBlock.saveItem(dropList, editable)
+    var index = $(dragItemList).data().index;
     $(draggedItem).remove()
 }
