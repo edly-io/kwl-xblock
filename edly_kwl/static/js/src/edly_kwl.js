@@ -19,7 +19,7 @@ function EdlyKWLXBlock(runtime, element) {
         ADD_NEW_ITEM_BUTTON: 'button.add_field_button',
         LIST_VIEW_ITEM_TEMPLATE: 'script[name="item-template"]',
         LIST_VIEW_CONTAINER: '.list-container-view',
-        DROPPABLE_COLUMNS: '#learned-container, #wonder-container, #know-container',
+        DROPPABLE_COLUMNS: '#column-know, #column-wonder, #column-learned',
     }
 
     _EdlyKWLXBlock.View = {
@@ -151,6 +151,11 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
 
 EdlyKWLXBlock.prototype.save = function (targetElement) {
     var _EdlyKWLXBlock = this;
+    if (targetElement.textContent.trim() === "") {
+        $(targetElement.parentElement).remove()
+        return
+    }
+
     var listView = $(targetElement).closest(_EdlyKWLXBlock.Selector.LIST_VIEW_CONTAINER);
     _EdlyKWLXBlock.saveItem(listView, targetElement)
 }
@@ -184,16 +189,23 @@ EdlyKWLXBlock.prototype.getObject = function(el) {
     return el
 }
 
-EdlyKWLXBlock.prototype.isDropRestricted = function(dragList, dropList) {
+EdlyKWLXBlock.prototype.isDropRestricted = function(dragList, dropList, type) {
     var _EdlyKWLXBlock = this;
-
     var droppedIndex = $(dropList).attr("data-index")
     var draggedIndex = $(dragList).attr("data-index")
     var restricedDrops = "knows wonder"
     var dragListID = $(dragList).attr("id"), dropListID = $(dropList).attr("id")
+    var isNotAllowed = ((droppedIndex !== "learned") && (type !== droppedIndex.charAt(0)))
     // restrict same column drop or swap between Know & Wonder items
+    // item should be dragged back to its original column
     return  (dragListID === dropListID ||
-            (restricedDrops.includes(droppedIndex) && restricedDrops.includes(draggedIndex)))
+            (restricedDrops.includes(droppedIndex) && restricedDrops.includes(draggedIndex)) ||
+            isNotAllowed)
+}
+
+EdlyKWLXBlock.prototype.getItemsList = function(targetElement) {
+    var _EdlyKWLXBlock = this;
+    return targetElement.querySelector(_EdlyKWLXBlock.Selector.LIST_VIEW_CONTAINER)
 }
 
 EdlyKWLXBlock.prototype.handleItemDrop = function (event, ui) {
@@ -201,12 +213,13 @@ EdlyKWLXBlock.prototype.handleItemDrop = function (event, ui) {
     var draggedItem = ui.draggable;
 
     var dragItemList = _EdlyKWLXBlock.getObject(draggedItem.parent());
-    var dropList = event.target;
+    var dropList = _EdlyKWLXBlock.getItemsList(event.target);
     var clone = $(draggedItem).clone();
     var cloneContext = _EdlyKWLXBlock.getObject(clone)
+
     var editable = _EdlyKWLXBlock.getObject($(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, cloneContext));
     $(editable).attr("data-dropped", droppedIn)
-    if (_EdlyKWLXBlock.isDropRestricted(dragItemList, dropList)) {
+    if (_EdlyKWLXBlock.isDropRestricted(dragItemList, dropList, $(editable).attr("data-type"))) {
         draggedItem.draggable('option', 'revert', true);
         return
     }

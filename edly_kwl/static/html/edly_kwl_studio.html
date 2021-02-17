@@ -12,20 +12,34 @@
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
-                        <label  class="label setting-label" for="knows-help-text">Enter knows help text.</label>
+                        <label  class="label setting-label" for="know-title-text">Know column title</label>
+                        <input id="know-title-text" name="know_title" form="edly-kwl-configs" value="{{ self.config.know_title.strip }}"/>
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="wonder-title-text">Wonder column title</label>
+                        <input id="wonder-title-text" name="wonder_title" form="edly-kwl-configs" value="{{ self.config.wonder_title.strip }}"/>
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="learned-title-text">Learned column title</label>
+                        <input id="learned-title-text" name="learned_title" form="edly-kwl-configs" value="{{ self.config.learned_title.strip }}"/>
+                    </div>
+                </li>
+                <li class="field comp-setting-entry is-set">
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="knows-help-text">Enter knows help text</label>
                         <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="knows-help-text" name="knows_help_text" form="edly-kwl-configs">{{ self.config.knows_help_text.strip }}</textarea>
                     </div>
 
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
-                        <label  class="label setting-label" for="wonder-help-text">Enter wonder help text.</label>
+                        <label  class="label setting-label" for="wonder-help-text">Enter wonder help text</label>
                         <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="wonder-help-text" name="wonder_help_text" form="edly-kwl-configs">{{ self.config.wonder_help_text.strip }}</textarea>
                     </div>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
-                        <label  class="label setting-label" for="learned-help-text">Enter learned help text.</label>
+                        <label  class="label setting-label" for="learned-help-text">Enter learned help text</label>
                         <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="learned-help-text" name="learned_help_text" form="edly-kwl-configs">{{ self.config.learned_help_text.strip }}</textarea>
                     </div>
                 </li>
