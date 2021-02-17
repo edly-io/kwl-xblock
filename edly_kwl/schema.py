@@ -11,6 +11,9 @@ LIST_SCHEMA = Schema([
 ])
 
 CONFIG_SCHEMA = Schema({
+    Required('know_title'): str,
+    Required('wonder_title'): str,
+    Required('learned_title'): str,
     Required('knows_help_text'): str,
     Required('wonder_help_text'): str,
     Required('learned_help_text'): str,

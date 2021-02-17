@@ -23,9 +23,10 @@ class EdlyKWLXBlock(XBlock):
 
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
                           default="Edly KWL", scope=Scope.settings)
-
-
     config = Any(scope=Scope.settings, default={
+        'know_title': 'Know',
+        'wonder_title': 'Wonder',
+        'learned_title': 'Learned',
         'knows_help_text': '''
             <p>Step 01: List things you already know about the topic.</p>
             <p><span class="info">For example: Pollution is leading to global warming.</span></p>
