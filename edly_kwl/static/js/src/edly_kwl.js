@@ -149,13 +149,9 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     $(target).append(itemView);
 }
 
+
 EdlyKWLXBlock.prototype.save = function (targetElement) {
     var _EdlyKWLXBlock = this;
-    if (targetElement.textContent.trim() === "") {
-        $(targetElement.parentElement).remove()
-        return
-    }
-
     var listView = $(targetElement).closest(_EdlyKWLXBlock.Selector.LIST_VIEW_CONTAINER);
     _EdlyKWLXBlock.saveItem(listView, targetElement)
 }
@@ -165,6 +161,14 @@ EdlyKWLXBlock.prototype.saveItem = function (targetListView, targetElement) {
     var data = $(targetListView).data();
     var url = data.saveUrl, index = data.index;
     var payload = _EdlyKWLXBlock.toItemJson(targetElement);
+
+    if (targetElement.textContent.trim() === "") {
+        $(targetElement.parentElement).remove()
+        if (typeof payload["id"] === 'undefined') {
+            return
+        }
+    }
+
     _EdlyKWLXBlock.submit(url, payload, function (res) {
         _EdlyKWLXBlock.state[index] = res[index];
         _EdlyKWLXBlock.updateListView(_EdlyKWLXBlock.element, targetListView, _EdlyKWLXBlock.state[index]);

@@ -1,6 +1,14 @@
 /* CSS for EdlyKWLXBlock */
 
 .edly_kwl_block { overflow: hidden; }
+/* remove the following lines when LTR enforcement is not required */
+body.courseware .course-wrapper.rtl-content .column .description p,
+body.courseware .course-wrapper.rtl-content .column h2,
+.edly_kwl_block .field-row {
+    direction: ltr !important;
+    text-align: left;
+    font-family: "hkgrotesk","nastaliq","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
 .edly_kwl_block h1 {
     font-weight: bold;
     font-size: 70px;

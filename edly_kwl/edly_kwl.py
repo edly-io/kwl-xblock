@@ -66,7 +66,6 @@ class EdlyKWLXBlock(XBlock):
         return dict(knows=self.list_know_about, wonder=self.list_wonder_about, learned=self.list_learned_about,
                     show_learned_column=self.show_learned_column)
 
-
     @staticmethod
     def json_response(payload):
         """
