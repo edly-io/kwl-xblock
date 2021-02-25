@@ -36,7 +36,7 @@ class EdlyKWLXBlock(XBlock):
             <p><span class="info">For example: What changes can I make to minimize my impact on the environment?</span></p>
         ''',
         'learned_help_text': '''
-            <p>Step 01: List things you have learned</p>
+            <p>Step 03: List things you have learned</p>
             <p><span class="info">For example: Pollution is leading to global warming.</span></p>
         ''',
     })
