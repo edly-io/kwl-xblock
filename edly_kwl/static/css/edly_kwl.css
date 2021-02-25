@@ -58,6 +58,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
     padding: 21px 19px;
     display: flex;
     align-items: center;
+    position: relative;
 }
 .edly_kwl_block .field-row.editable { background: #A0DEED; }
 .edly_kwl_block .field-row .drag {
@@ -74,7 +75,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
     font-family: 'FontAwesome';
     font-size: 26px;
     line-height: 26px;
-    margin: 0 2px;
+    margin: 0 1.1px;
     color: #2E2E2E;
 }
 .edly_kwl_block .field-row.editable .drag:after,
@@ -127,3 +128,13 @@ body.courseware .course-wrapper.rtl-content .column h2,
 .edly_kwl_block button i { padding: 0 3px 0 0; }
 .edly_kwl_block button:hover { background: #76A4A8; }
 .list-container-view { min-height: 80px; }
+.button-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.edly_kwl_block .column .counter {
+    font-size: 12px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}

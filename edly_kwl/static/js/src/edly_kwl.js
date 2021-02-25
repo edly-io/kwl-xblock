@@ -1,6 +1,7 @@
 /* Javascript for EdlyKWLXBlock. */
 function EdlyKWLXBlock(runtime, element) {
     var _EdlyKWLXBlock = this, state = {};
+    _EdlyKWLXBlock.limit = 256
     _EdlyKWLXBlock.element = element;
     _EdlyKWLXBlock.runtime = runtime;
     _EdlyKWLXBlock.showLearned = false;
@@ -12,8 +13,13 @@ function EdlyKWLXBlock(runtime, element) {
     }
 
     _EdlyKWLXBlock.Selector = {
+        COUNTER: '.counter',
+        FOCUS_EVENT: 'focus',
+        EDITABLE: '[contenteditable]',
         ITEM_EDIT_AREA: 'span.textarea[contenteditable]',
         KNOW_ITEMS: '#know-container',
+        FIELD_ROWS: '.field-row',
+        CHANGE_EVENTS: 'blur keyup paste input',
         WONDER_ITEMS: '#wonder-container',
         LEARNED_ITEMS: '#learned-container',
         ADD_NEW_ITEM_BUTTON: 'button.add_field_button',
@@ -35,19 +41,46 @@ function EdlyKWLXBlock(runtime, element) {
         return _EdlyKWLXBlock.state[key]
     }
 
+    function placeCaretAtEnd(el) {
+        el.focus();
+        if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+            var range = document.createRange();
+            range.selectNodeContents(el[0]);
+            range.collapse(false);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    function checkCharacterLimit(editable) {
+        if (editable.data('before') !== editable.html()) {
+            var counterLabel = $(editable).siblings(_EdlyKWLXBlock.Selector.COUNTER)
+            var contentLength = editable.html().length;
+            if ( contentLength > _EdlyKWLXBlock.limit && contentLength > editable.data('before').length) {
+                // If limit has exceeded reset the content
+                editable.html(editable.data('before'))
+                placeCaretAtEnd(editable)
+            }else {
+                $(counterLabel).text(_EdlyKWLXBlock.limit-editable.html().length)
+                editable.data('before', editable.html());
+            }
+        }
+    }
+
     $(function ($) {
         /* Here's where you'd do things on page load. */
 
-        $('.textarea').focus(function () {
-            $(this).parent('.edly_kwl_block .field-row').addClass('focus');
-        });
-
-        $('.textarea').blur(function () {
-            $(this).parent('.edly_kwl_block .field-row').removeClass('focus');
+        $('#kwl_content').on(_EdlyKWLXBlock.Selector.FOCUS_EVENT, _EdlyKWLXBlock.Selector.EDITABLE, function() {
+            var editable = $(this);
+            editable.data('before', editable.html());
+        }).on(_EdlyKWLXBlock.Selector.CHANGE_EVENTS, _EdlyKWLXBlock.Selector.EDITABLE, function() {
+            checkCharacterLimit($(this));
         });
 
         _EdlyKWLXBlock.init();
         _EdlyKWLXBlock.updateState(function (res) {
+            _EdlyKWLXBlock.maxInputs = getState('max_inputs')
             _EdlyKWLXBlock.showLearned = getState('show_learned_column')
             _EdlyKWLXBlock.updateListView(element, _EdlyKWLXBlock.View.KNOW_ITEMS_DIV, getState('knows'));
             _EdlyKWLXBlock.updateListView(element, _EdlyKWLXBlock.View.WONDER_ITEMS_DIV, getState('wonder'));
@@ -84,6 +117,17 @@ EdlyKWLXBlock.prototype.updateState = function (cb) {
     });
 }
 
+EdlyKWLXBlock.prototype.checkItemLimit = function(view, itemCount) {
+    var _EdlyKWLXBlock = this;
+    var targetButton = _EdlyKWLXBlock.getObject($(view).siblings(_EdlyKWLXBlock.Selector.ADD_NEW_ITEM_BUTTON));
+
+    if (itemCount >= _EdlyKWLXBlock.maxInputs) {
+        $(targetButton).addClass("button-disabled")
+    }else {
+        $(targetButton).removeClass("button-disabled")
+    }
+}
+
 EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
     var _EdlyKWLXBlock = this;
     $(view).empty();
@@ -95,11 +139,14 @@ EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
         editable.text(item.content).attr({'data-index': viewIndex, 'data-type': item.type,
                                           'data-id': item.id, 'data-dropped': item.dropped_in});
         $(itemView).attr("id", index)
+        var counterLabel = $(editable).siblings(".counter")
+        $(counterLabel).text(_EdlyKWLXBlock.limit-editable.html().length)
         var divClassToAdd = "editable"
         // Learned items shouldn't be dragged
         if (_EdlyKWLXBlock.showLearned && item.type != 'l') {
             _EdlyKWLXBlock.makeDraggable(itemView)
             divClassToAdd = "movable"
+            $(counterLabel).hide()
         }
         $(itemView).addClass(divClassToAdd);
 
@@ -109,12 +156,13 @@ EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
 
         $(view).append(itemView);
     });
+
+    _EdlyKWLXBlock.validateList(view);
 }
 
 EdlyKWLXBlock.prototype.makeDraggable = function (item, targetDivID="learned-container") {
     var _EdlyKWLXBlock = this;
     $(item).draggable({
-        containment: "#kwl_content",
         snap: "#kwl_content",
         stack: '#'+ targetDivID,
         cursor: 'auto',
@@ -133,6 +181,28 @@ EdlyKWLXBlock.prototype.toItemJson = function (targetItem) {
             "dropped_in": $(targetItem).attr("data-dropped")}
 }
 
+EdlyKWLXBlock.prototype.validateList = function (targetListView, removingItem=false) {
+    var _EdlyKWLXBlock = this;
+    var list = $(_EdlyKWLXBlock.getObject(targetListView)).children(_EdlyKWLXBlock.Selector.FIELD_ROWS);
+    var data = $(targetListView).data();
+    if (!data){return}
+    var children = list.children("span.textarea[data-type='"+data.index.charAt(0)+"']")
+    var childCount = removingItem ? children.length - 1 : children.length
+    _EdlyKWLXBlock.checkItemLimit(targetListView, childCount);
+}
+
+EdlyKWLXBlock.prototype.validateAddItem = function (targetElement) {
+    var _EdlyKWLXBlock = this;
+    var targetListView = $(targetElement).siblings(_EdlyKWLXBlock.Selector.LIST_VIEW_CONTAINER);
+    _EdlyKWLXBlock.validateList(targetListView)
+}
+
+EdlyKWLXBlock.prototype.validateRemoveItem = function (targetElement) {
+    var _EdlyKWLXBlock = this;
+    var listView = targetElement.parentElement.parentElement;
+    _EdlyKWLXBlock.validateList(listView, true)
+}
+
 EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     var _EdlyKWLXBlock = this;
     var data = $(targetEle).data(), target = $(data.target, _EdlyKWLXBlock.element);
@@ -141,12 +211,15 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     $(itemView).attr("id", data.index+$(target).children().length);
     $(itemView).addClass("editable");
     var index = data.index;
+
     editable.attr({'data-index': index, 'data-type': index.charAt(0)});
+
     editable.focusout(function (e) {
         _EdlyKWLXBlock.save(this);
     });
 
     $(target).append(itemView);
+    _EdlyKWLXBlock.validateAddItem(targetEle);
 }
 
 
@@ -163,6 +236,7 @@ EdlyKWLXBlock.prototype.saveItem = function (targetListView, targetElement) {
     var payload = _EdlyKWLXBlock.toItemJson(targetElement);
 
     if (targetElement.textContent.trim() === "") {
+        _EdlyKWLXBlock.validateRemoveItem(targetElement)
         $(targetElement.parentElement).remove()
         if (typeof payload["id"] === 'undefined') {
             return

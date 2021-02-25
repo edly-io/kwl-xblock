@@ -7,7 +7,7 @@ TYPE_CHOICES = [('k', 'know'), ('w', 'wonder'), ('l', 'learned')]
 
 
 class KWLModel(models.Model):
-    content = models.TextField()
+    content = models.CharField(max_length=256)
     type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     dropped_in = models.CharField(max_length=1, choices=TYPE_CHOICES, blank=True)
     sort_order = models.IntegerField()
