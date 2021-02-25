@@ -51,7 +51,7 @@ EdlyKWLStudioXBlock.prototype.init = function ($) {
 EdlyKWLStudioXBlock.prototype.toJson = function (form) {
     var serializedArray = $(form).serializeArray(), data = {};
     $.each(serializedArray, function (index, item) {
-        data[item.name] = item.value
+        data[item.name] = item.value;
     });
 
     return data;

@@ -51,6 +51,10 @@ class EdlyKWLXBlock(XBlock):
         return self.config.get('show_learned_column', False)
 
     @property
+    def max_inputs(self):
+        return self.config.get('max_inputs', 3)
+
+    @property
     def list_learned_about(self):
         return list(self.get_kel_data().filter(dropped_in='l'))
 
@@ -64,7 +68,7 @@ class EdlyKWLXBlock(XBlock):
 
     def get_context_data(self):
         return dict(knows=self.list_know_about, wonder=self.list_wonder_about, learned=self.list_learned_about,
-                    show_learned_column=self.show_learned_column)
+                    show_learned_column=self.show_learned_column, max_inputs=self.max_inputs)
 
     @staticmethod
     def json_response(payload):

@@ -23,6 +23,10 @@
                         <label  class="label setting-label" for="learned-title-text">Learned column title</label>
                         <input id="learned-title-text" name="learned_title" form="edly-kwl-configs" value="{{ self.config.learned_title.strip }}"/>
                     </div>
+                    <div class="wrapper-comp-setting">
+                        <label  class="label setting-label" for="learned-max-inputs">Max inputs (between 1 and 5)</label>
+                        <input type="number" min="1" max="5" id="learned-max-inputs" name="max_inputs" form="edly-kwl-configs" value="{{ self.max_inputs }}"/>
+                    </div>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
