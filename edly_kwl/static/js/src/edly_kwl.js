@@ -20,6 +20,7 @@ function EdlyKWLXBlock(runtime, element) {
         KNOW_ITEMS: '#know-container',
         FIELD_ROWS: '.field-row',
         CHANGE_EVENTS: 'blur keyup paste input',
+        KEYDOWN_EVENTS: 'keydown',
         WONDER_ITEMS: '#wonder-container',
         LEARNED_ITEMS: '#learned-container',
         ADD_NEW_ITEM_BUTTON: 'button.add_field_button',
@@ -53,17 +54,38 @@ function EdlyKWLXBlock(runtime, element) {
         }
     }
 
+    function enterPressed(event) {
+        return (event.key === 'Enter' || event.keyCode === 13)
+    }
+
+    function resetItemText(editable) {
+        editable.text(editable.data('before'))
+    }
+
+    function updateBeforeData(editable) {
+        editable.data('before', editable.text());
+    }
+
+    function checkAndSaveForEnterKey(editable, event) {
+        if (enterPressed(event)) {
+            event.preventDefault();
+            resetItemText(editable)
+            editable.blur();
+            return false;
+        }
+    }
+
     function checkCharacterLimit(editable) {
-        if (editable.data('before') !== editable.html()) {
+        if (editable.data('before') !== editable.text()) {
             var counterLabel = $(editable).siblings(_EdlyKWLXBlock.Selector.COUNTER)
-            var contentLength = editable.html().length;
+            var contentLength = editable.text().length;
             if ( contentLength > _EdlyKWLXBlock.limit && contentLength > editable.data('before').length) {
                 // If limit has exceeded reset the content
-                editable.html(editable.data('before'))
+                resetItemText(editable)
                 placeCaretAtEnd(editable)
             }else {
-                $(counterLabel).text(_EdlyKWLXBlock.limit-editable.html().length)
-                editable.data('before', editable.html());
+                $(counterLabel).text(_EdlyKWLXBlock.limit-editable.text().length)
+                updateBeforeData(editable)
             }
         }
     }
@@ -73,7 +95,9 @@ function EdlyKWLXBlock(runtime, element) {
 
         $('#kwl_content').on(_EdlyKWLXBlock.Selector.FOCUS_EVENT, _EdlyKWLXBlock.Selector.EDITABLE, function() {
             var editable = $(this);
-            editable.data('before', editable.html());
+            updateBeforeData(editable)
+        }).on(_EdlyKWLXBlock.Selector.KEYDOWN_EVENTS, _EdlyKWLXBlock.Selector.EDITABLE, function(e) {
+            checkAndSaveForEnterKey($(this), e)
         }).on(_EdlyKWLXBlock.Selector.CHANGE_EVENTS, _EdlyKWLXBlock.Selector.EDITABLE, function() {
             checkCharacterLimit($(this));
         });
@@ -141,7 +165,7 @@ EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
                                           'onpaste': 'return false'});
         $(itemView).attr("id", index)
         var counterLabel = $(editable).siblings(".counter")
-        $(counterLabel).text(_EdlyKWLXBlock.limit-editable.html().length)
+        $(counterLabel).text(_EdlyKWLXBlock.limit-editable.text().length)
         var divClassToAdd = "editable"
         // Learned items shouldn't be dragged
         if (_EdlyKWLXBlock.showLearned && item.type != 'l') {
