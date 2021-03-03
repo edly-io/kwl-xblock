@@ -137,7 +137,8 @@ EdlyKWLXBlock.prototype.updateListView = function (element, view, list) {
         var editable = $(_EdlyKWLXBlock.Selector.ITEM_EDIT_AREA, itemView);
         var viewIndex = $(view).data('index')
         editable.text(item.content).attr({'data-index': viewIndex, 'data-type': item.type,
-                                          'data-id': item.id, 'data-dropped': item.dropped_in});
+                                          'data-id': item.id, 'data-dropped': item.dropped_in,
+                                          'onpaste': 'return false'});
         $(itemView).attr("id", index)
         var counterLabel = $(editable).siblings(".counter")
         $(counterLabel).text(_EdlyKWLXBlock.limit-editable.html().length)
@@ -212,7 +213,8 @@ EdlyKWLXBlock.prototype.addListItem = function (targetEle) {
     $(itemView).addClass("editable");
     var index = data.index;
 
-    editable.attr({'data-index': index, 'data-type': index.charAt(0)});
+    editable.attr({'data-index': index, 'data-type': index.charAt(0),
+                   'onpaste': 'return false'});
 
     editable.focusout(function (e) {
         _EdlyKWLXBlock.save(this);

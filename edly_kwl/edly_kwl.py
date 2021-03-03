@@ -21,6 +21,8 @@ class EdlyKWLXBlock(XBlock):
     Know Wonder Learn Activity XBlock
     """
 
+    has_score = True
+    icon_class = 'problem'
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
                           default="Edly KWL", scope=Scope.settings)
     config = Any(scope=Scope.settings, default={
@@ -87,6 +89,7 @@ class EdlyKWLXBlock(XBlock):
     def update_state(self, payload):
         try:
             send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=payload)
+            self.runtime.publish(self, "grade", {'max_value': 1.0, 'value': 1.0})
         except MultipleInvalid as e:
             raise JsonHandlerError(500, str(e))
         return self.get_context_data()
