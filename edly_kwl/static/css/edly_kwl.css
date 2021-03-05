@@ -30,7 +30,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
     line-height: 17px;
     margin: 0 0 0 6px;
     width: 50%;
-    height: 654px;
+    height: 724px;
     overflow: hidden;
 }
 .edly_kwl_block .column:first-child { margin: 0; }
@@ -45,7 +45,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
     overflow: hidden;
     margin: 0 0 15px;
 }
-.edly_kwl_block .column p { margin: 0 0 8px; }
+.edly_kwl_block .column p { margin: 0 0 20px; }
 .edly_kwl_block .column p span { font-style: italic; }
 .edly_kwl_block .input_fields_wrap {
     overflow-y: auto;
