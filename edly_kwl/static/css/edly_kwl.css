@@ -24,7 +24,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
 .edly_kwl_block .column {
     border-top: 5px solid #8BC5CB;
     background: #F2F2F2;
-    padding: 32px 39px;
+    padding: 32px 38px;
     color:#2E2E2E;
     font-size: 14px;
     line-height: 17px;
@@ -40,11 +40,7 @@ body.courseware .course-wrapper.rtl-content .column h2,
     line-height: 28px;
     margin: 0 0 27px;
 }
-.edly_kwl_block .column .description {
-    height: 90px;
-    overflow: hidden;
-    margin: 0 0 15px;
-}
+.edly_kwl_block .column .description { overflow: hidden; }
 .edly_kwl_block .column p { margin: 0 0 20px; }
 .edly_kwl_block .column p span { font-style: italic; }
 .edly_kwl_block .input_fields_wrap {
@@ -137,4 +133,26 @@ body.courseware .course-wrapper.rtl-content .column h2,
     position: absolute;
     right: 5px;
     bottom: 5px;
+}
+
+@media only screen and (max-width: 990px) {
+    .edly_kwl_block .column .description { height: 115px; }
+}
+
+@media only screen and (max-width: 800px) {
+    .edly_kwl_block .column { padding: 20px; }
+}
+
+@media only screen and (max-width: 767px) {
+    .edly_kwl_block .columns-holder {
+        display: block;
+    }
+    .edly_kwl_block .column,
+    .edly_kwl_block .column:first-child {
+        padding: 15px;
+        height: auto;
+        width: 100%;
+        margin: 0 0 15px;
+    }
+    .edly_kwl_block .column .description { height: auto; }
 }
