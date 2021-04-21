@@ -154,10 +154,11 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block button i { padding: 
 @media only screen and (max-width: 1245px) {
     body.courseware .course-wrapper.rtl-content .edly_kwl_block .column { padding: 32px 20px; }
     body.courseware .course-wrapper.rtl-content .edly_kwl_block button {
-        width: 100%;
-        height: auto;
+        width: auto;
+        height: 45px;
+        padding: 0 20px;
         font-size: 14px !important;
-        line-height: 16px !important;
+        line-height: 45px !important;
     }
     body.courseware .course-wrapper.rtl-content .edly_kwl_block button i {
         font-size: 13px !important;
@@ -188,7 +189,7 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block button i { padding: 
     body.courseware .course-wrapper.rtl-content .edly_kwl_block .column:first-child {
         padding: 15px;
         height: auto;
-        width: 100%;
+        width: auto;
         margin: 0 0 15px;
     }
     .edly_kwl_block .column .description { height: auto; }
