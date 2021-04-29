@@ -2,8 +2,8 @@
 
 .edly_kwl_block { overflow: hidden; }
 /* remove the following lines when LTR enforcement is not required */
-body.courseware .course-wrapper.rtl-content .column .description p,
-body.courseware .course-wrapper.rtl-content .column h2,
+body.courseware .course-wrapper.rtl-content .edly_kwl_block .column .description p,
+body.courseware .course-wrapper.rtl-content .edly_kwl_block .column h2,
 .edly_kwl_block .field-row {
     direction: ltr !important;
     text-align: left;
