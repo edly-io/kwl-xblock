@@ -146,9 +146,9 @@ EdlyKWLXBlock.prototype.checkItemLimit = function(view, itemCount) {
     var targetButton = _EdlyKWLXBlock.getObject($(view).siblings(_EdlyKWLXBlock.Selector.ADD_NEW_ITEM_BUTTON));
 
     if (itemCount >= _EdlyKWLXBlock.maxInputs) {
-        $(targetButton).addClass("button-disabled")
+        $(targetButton).addClass("button-disabled").attr('disabled', 'disabled')
     }else {
-        $(targetButton).removeClass("button-disabled")
+        $(targetButton).removeClass("button-disabled").removeAttr('disabled')
     }
 }
 
