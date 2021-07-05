@@ -1,5 +1,4 @@
 from re import search
-from xml.etree import ElementTree
 from django.template import Context, Template
 from pkg_resources import resource_string as pkg_resource_string
 
@@ -27,7 +26,7 @@ def resource_string(path):
     return data.decode("utf8")
 
 
-def render_template(template_path, context={}):
+def render_template(template_path, context):
     """
     render resorce using django template engine and the give content object to it.
     :param template_path: (str) path of the resource to load

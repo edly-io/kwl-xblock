@@ -3,7 +3,7 @@ function EdlyKWLStudioXBlock(runtime, element) {
 
     _EdlyKWLStudioXBlock.element = element;
     _EdlyKWLStudioXBlock.runtime = runtime;
-    _EdlyKWLStudioXBlock.notify = typeof (runtime.notify) != 'undefined';
+    _EdlyKWLStudioXBlock.notify = typeof (runtime.notify) !== 'undefined';
 
     // Add urls here.
     _EdlyKWLStudioXBlock.URL = {
