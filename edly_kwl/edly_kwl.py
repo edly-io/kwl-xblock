@@ -12,7 +12,7 @@ from xblock.exceptions import JsonHandlerError
 from xblock.fields import String, Scope, Any
 
 from edly_kwl.kwl_djangoapp.utils import send_kwl_state_update_signal
-from edly_kwl.schema import LIST_SCHEMA, CONFIG_SCHEMA
+from edly_kwl.schema import CONFIG_SCHEMA
 from edly_kwl.utils import render_template, resource_string
 
 
@@ -80,10 +80,10 @@ class EdlyKWLXBlock(XBlock):
         :return: Response
         """
         class CustomJSONEncoder(JSONEncoder):
-            def default(self, value):
-                if isinstance(value, datetime.date):
-                    return dict(year=value.year, month=value.month, day=value.day)
-                return value.__dict__
+            def default(self, o):
+                if isinstance(o, datetime.date):
+                    return dict(year=o.year, month=o.month, day=o.day)
+                return o.__dict__
         return Response(CustomJSONEncoder().encode(payload), content_type='application/json', charset='UTF-8')
 
     def update_state(self, payload):
@@ -95,11 +95,11 @@ class EdlyKWLXBlock(XBlock):
         return self.get_context_data()
 
     @XBlock.json_handler
-    def create_update_item(self, data, suffix=''):
+    def create_update_item(self, data, suffix=''):  # pylint: disable=unused-argument
         return self.json_response(self.update_state(data))
 
     @XBlock.json_handler
-    def update_settings(self, config, suffix=''):
+    def update_settings(self, config, suffix=''):  # pylint: disable=unused-argument
 
         try:
             self.config = CONFIG_SCHEMA(config)
@@ -110,7 +110,7 @@ class EdlyKWLXBlock(XBlock):
         return config
 
     @XBlock.handler
-    def get_state(self, request, suffix=''):
+    def get_state(self, request, suffix=''):  # pylint: disable=unused-argument
         state = self.get_context_data()
         return self.json_response(state)
 
@@ -129,7 +129,7 @@ class EdlyKWLXBlock(XBlock):
         fragment.initialize_js('EdlyKWLXBlock')
         return fragment
 
-    def studio_view(self, context=None):
+    def studio_view(self, context=None):  # pylint: disable=unused-argument
         html = render_template("static/html/edly_kwl_studio.html", {"self": self})
         fragment = Fragment()
         fragment.add_content(html)
@@ -138,8 +138,6 @@ class EdlyKWLXBlock(XBlock):
         fragment.initialize_js('EdlyKWLStudioXBlock')
         return fragment
 
-    # TO-DO: change this to create the scenarios you'd like to see in the
-    # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
