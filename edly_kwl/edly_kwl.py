@@ -24,7 +24,7 @@ class EdlyKWLXBlock(XBlock):
     has_score = True
     icon_class = 'problem'
     display_name = String(help="This name appears in horizontal navigation at the top of the page.",
-                          default="Edly KWL", scope=Scope.settings)
+                          default="ilmX KWL", scope=Scope.settings)
     config = Any(scope=Scope.settings, default={
         'know_title': 'Know',
         'wonder_title': 'Wonder',
