@@ -1,4 +1,5 @@
-Edly Assessment
+Edly Know Wonder Learn  ![Pylint Workflow](https://github.com/PakistanX/edly-kwl-xblock/actions/workflows/pylint.yml/badge.svg)
+![ESLint workflow](https://github.com/PakistanX/edly-kwl-xblock/actions/workflows/es-lint.yml/badge.svg)
 ---------------------------------------------
 
 This XBlock allows Learners to Enter the points they already know about the course they are about to 
@@ -12,7 +13,7 @@ Install the requirements into the python virtual environment of your
 ``edx-platform`` installation by running the following command from the
 root folder:
 
-    pip install -e git@github.com:edly-io/edly-kwl-xblock.git@release-v0.1.0#egg=edly-kwl
+    pip install -e git@github.com:PakistanX/edly-kwl-xblock.git@release-v0.1.0#egg=edly-kwl
 
 Enabling in Studio
 ------------------
