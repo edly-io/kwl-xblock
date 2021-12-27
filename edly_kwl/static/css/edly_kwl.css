@@ -195,3 +195,7 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block button i { padding: 
     .edly_kwl_block .column .description { height: auto; }
     body.courseware .course-wrapper.rtl-content .edly_kwl_block button { width: 170px; }
 }
+
+.edly_kwl_block .in-center {
+    text-align: center !important;
+}

@@ -9,7 +9,7 @@
     {% with learn_column_visible=self.show_learned_column %}
     <div class="columns-holder">
         <div class="column"  id="column-know">
-            <h2>{{ self.config.know_title }}</h2>
+            <h2 class="in-center">{{ self.config.know_title }}</h2>
             <div class="description">
                 {{ self.config.knows_help_text|safe }}
             </div>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="column" id="column-wonder">
-            <h2>{{ self.config.wonder_title }}</h2>
+            <h2 class="in-center">{{ self.config.wonder_title }}</h2>
             <div class="description">
                 {{ self.config.wonder_help_text|safe }}
             </div>
@@ -36,7 +36,7 @@
         </div>
         {% if learn_column_visible %}
         <div class="column" id="column-learned">
-            <h2>{{ self.config.learned_title }}</h2>
+            <h2 class="in-center">{{ self.config.learned_title }}</h2>
             <div class="description">
                 {{ self.config.learned_help_text|safe }}
             </div>
