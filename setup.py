@@ -26,7 +26,7 @@ def package_data(pkg, roots):
 setup(
     name='edly_kwl-xblock',
     author='Edly Enterprise',
-    version='0.1.1',
+    version='0.1.2',
     description='edly_kwl XBlock allows users to enter points they already know & wonder '
                 'they\'ll learn from course and validate those points at the end of the course',
     license='',
