@@ -13,7 +13,7 @@ Install the requirements into the python virtual environment of your
 ``edx-platform`` installation by running the following command from the
 root folder:
 
-    pip install -e git@github.com:PakistanX/edly-kwl-xblock.git@release-v0.1.2#egg=edly-kwl
+    pip install -e git@github.com:PakistanX/edly-kwl-xblock.git@release-v0.1.3#egg=edly-kwl
 
 Enabling in Studio
 ------------------
