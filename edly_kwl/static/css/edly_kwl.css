@@ -22,10 +22,10 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block .column h2,
     justify-content: space-between;
 }
 .edly_kwl_block .column {
-    border-top: 5px solid #8BC5CB;
+    border-top: 5px solid #56B7F7;
     background: #F2F2F2;
     padding: 32px 38px;
-    color:#2E2E2E;
+    color: white;
     font-size: 14px;
     line-height: 17px;
     margin: 0 0 0 6px;
@@ -118,7 +118,7 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
 .edly_kwl_block button {
     width: 200px;
     height: 50px;
-    background: #8BC5CB;
+    background: #395B87;
     border-radius: 6px;
     border: 0;
     outline: none;
@@ -127,7 +127,7 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
     line-height: 50px !important;
     overflow: hidden;
     padding: 0 10px;
-    color: #2E2E2E;
+    color: white;
     cursor: pointer;
     text-transform: uppercase;
     text-shadow: none;
@@ -138,7 +138,7 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
     font-family: 'FontAwesome' !important;
 }
 body.courseware .course-wrapper.rtl-content .edly_kwl_block button i { padding: 0 0 0 4px; }
-.edly_kwl_block button:hover { background: #76A4A8; }
+.edly_kwl_block button:hover { background: #253B58; }
 .list-container-view { min-height: 80px; }
 .button-disabled {
     opacity: 0.5;
