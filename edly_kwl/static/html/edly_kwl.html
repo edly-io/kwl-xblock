@@ -7,7 +7,7 @@
         </div>
     </script>
     {% with learn_column_visible=self.show_learned_column %}
-    <div class="columns-holder">
+    <div class="columns-holder {% if self.show_learned_column %} three {% endif %}">
         <div class="column"  id="column-know">
             <h2 class="in-center">{{ self.config.know_title }}</h2>
             <div class="description">
