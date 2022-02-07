@@ -42,7 +42,20 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block .column:first-child 
     line-height: 28px !important;
     margin: 0 0 27px;
 }
-.edly_kwl_block .column .description { overflow: hidden; }
+.edly_kwl_block .column .description {
+    overflow: hidden;;
+}
+.edly_kwl_block .column:last-child .description {
+    background: rgba(86, 183, 247, 0.5);
+    padding: 20px 20px 1px;
+    margin-bottom: 20px;
+}
+.edly_kwl_block .columns-holder.three .column {
+    border-color: #C4C4C4;
+}
+.edly_kwl_block .columns-holder.three .column:last-child {
+    border-color: #56B7F7;
+}
 .edly_kwl_block .column p { margin: 0 0 20px; }
 .edly_kwl_block .column p span { font-style: italic; }
 body.courseware .course-wrapper.rtl-content .column .description p {
