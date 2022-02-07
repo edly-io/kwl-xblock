@@ -25,7 +25,7 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block .column h2,
     border-top: 5px solid #56B7F7;
     background: #F2F2F2;
     padding: 32px 38px;
-    color: white;
+    color: #2E2E2E;
     font-size: 14px;
     line-height: 17px;
     margin: 0 0 0 6px;
@@ -67,7 +67,7 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
     align-items: center;
     position: relative;
 }
-.edly_kwl_block .field-row.editable { background: #A0DEED; }
+.edly_kwl_block .field-row.editable { background: #E2E2E2; }
 .edly_kwl_block .field-row .drag {
     display: block;
     cursor: grabbing;
@@ -106,7 +106,7 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
     overflow: hidden;
     display: block;
 }
-.edly_kwl_block .field-row.editable .textarea { background: #A0DEED; }
+.edly_kwl_block .field-row.editable .textarea { background: #E2E2E2; }
 .textarea[contenteditable]:empty::before {
     content: "Enter description here";
     color: #000;
@@ -138,7 +138,8 @@ body.courseware .course-wrapper.rtl-content .column .description p span {
     font-family: 'FontAwesome' !important;
 }
 body.courseware .course-wrapper.rtl-content .edly_kwl_block button i { padding: 0 0 0 4px; }
-.edly_kwl_block button:hover { background: #253B58; }
+.edly_kwl_block button:hover { background: #253B58;}
+.edly_kwl_block button:focus { box-shadow: none;}
 .list-container-view { min-height: 80px; }
 .button-disabled {
     opacity: 0.5;
