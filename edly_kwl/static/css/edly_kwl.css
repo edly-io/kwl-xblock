@@ -37,18 +37,22 @@ body.courseware .course-wrapper.rtl-content .edly_kwl_block .column h2,
 body.courseware .course-wrapper.rtl-content .edly_kwl_block .column:last-child { margin: 0; }
 body.courseware .course-wrapper.rtl-content .edly_kwl_block .column:first-child { margin: 0 0 0 6px; }
 .edly_kwl_block .column h2 {
+    color: #2E2E2E !important;
     font-weight: bold;
     font-size: 24px !important;
     line-height: 28px !important;
     margin: 0 0 27px;
 }
 .edly_kwl_block .column .description {
-    overflow: hidden;;
+    overflow: auto;
+    height: 110px;
+    padding-bottom: 1px;
+    margin-bottom: 15px;
 }
-.edly_kwl_block .column:last-child .description {
+.edly_kwl_block .columns-holder.three .column:last-child .description {
     background: rgba(86, 183, 247, 0.5);
     padding: 20px 20px 1px;
-    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 .edly_kwl_block .columns-holder.three .column {
     border-color: #C4C4C4;
