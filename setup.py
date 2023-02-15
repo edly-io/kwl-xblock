@@ -25,9 +25,8 @@ def package_data(pkg, roots):
 
 setup(
     name='kwl-xblock',
-    #TODO: ## What would be the name f author than?
-    author='Edly Enterprise',
-    version='0.1.4',
+    author='Edly',
+    version='0.1.0',
     description='kwl XBlock allows users to enter points they already know & wonder '
                 'they\'ll learn from course and validate those points at the end of the course',
     license='',

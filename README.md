@@ -18,7 +18,7 @@ Installation
 1. Install the requirements into `lms` and `studio` shell
     
     ```
-    pip install -e git@github.com:edly-io/kwl-xblock.git@release-v0.1.0#egg=kwl
+    pip install -e git+https://github.com/edly-io/kwl-xblock.git@release-v0.1.0#egg=kwl
     ```
     
 2. Got to `lms/envs/common.py` and add `kwl.kwl_djangoapp` in OPTIONAL_APPS
