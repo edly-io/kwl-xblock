@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from edly_kwl.kwl_djangoapp.models import KWLModel
+from kwl.kwl_djangoapp.models import KWLModel
 
 
 class KWLAdminManager(admin.ModelAdmin):

@@ -1,56 +1,56 @@
-<div class="edly-kwl-studio-view-container wrapper-comp-settings is-active">
+<div class="kwl-studio-view-container wrapper-comp-settings is-active">
     <div class="user-inputs-and-validation">
         <div class="xblock-inputs editor_content_wrapper">
             <ul class="list-input settings-list">
-                <form id="edly-kwl-configs" novalidate></form>
+                <form id="kwl-configs" novalidate></form>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label class="label setting-label" for="kwl-display-name">Display Name</label>
-                        <input id="kwl-display-name" name="kwl_display_name" form="edly-kwl-configs" value="{{ self.display_name.strip }}"/>
+                        <input id="kwl-display-name" name="kwl_display_name" form="kwl-configs" value="{{ self.display_name.strip }}"/>
                     </div>
                     <span class="tip setting-help">This name appears in the horizontal navigation at the top of the page.</span>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="know-title-text">Know column title</label>
-                        <input id="know-title-text" name="know_title" form="edly-kwl-configs" value="{{ self.config.know_title.strip }}"/>
+                        <input id="know-title-text" name="know_title" form="kwl-configs" value="{{ self.config.know_title.strip }}"/>
                     </div>
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="wonder-title-text">Wonder column title</label>
-                        <input id="wonder-title-text" name="wonder_title" form="edly-kwl-configs" value="{{ self.config.wonder_title.strip }}"/>
+                        <input id="wonder-title-text" name="wonder_title" form="kwl-configs" value="{{ self.config.wonder_title.strip }}"/>
                     </div>
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="learned-title-text">Learned column title</label>
-                        <input id="learned-title-text" name="learned_title" form="edly-kwl-configs" value="{{ self.config.learned_title.strip }}"/>
+                        <input id="learned-title-text" name="learned_title" form="kwl-configs" value="{{ self.config.learned_title.strip }}"/>
                     </div>
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="learned-max-inputs">Max inputs (between 1 and 5)</label>
-                        <input type="number" min="1" max="5" id="learned-max-inputs" name="max_inputs" form="edly-kwl-configs" value="{{ self.max_inputs }}"/>
+                        <input type="number" min="1" max="5" id="learned-max-inputs" name="max_inputs" form="kwl-configs" value="{{ self.max_inputs }}"/>
                     </div>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="knows-help-text">Enter knows help text</label>
-                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="knows-help-text" name="knows_help_text" form="edly-kwl-configs">{{ self.config.knows_help_text.strip }}</textarea>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="knows-help-text" name="knows_help_text" form="kwl-configs">{{ self.config.knows_help_text.strip }}</textarea>
                     </div>
 
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="wonder-help-text">Enter wonder help text</label>
-                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="wonder-help-text" name="wonder_help_text" form="edly-kwl-configs">{{ self.config.wonder_help_text.strip }}</textarea>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="wonder-help-text" name="wonder_help_text" form="kwl-configs">{{ self.config.wonder_help_text.strip }}</textarea>
                     </div>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="learned-help-text">Enter learned help text</label>
-                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="learned-help-text" name="learned_help_text" form="edly-kwl-configs">{{ self.config.learned_help_text.strip }}</textarea>
+                        <textarea rows="5" cols="60" class="input setting-input edit-embed-code" id="learned-help-text" name="learned_help_text" form="kwl-configs">{{ self.config.learned_help_text.strip }}</textarea>
                     </div>
                 </li>
                 <li class="field comp-setting-entry is-set">
                     <div class="wrapper-comp-setting">
                         <label  class="label setting-label" for="enable-learned-column">Enable learned column</label>
-                        <input id="enable-learned-column" class="enable-learned-checkbox" form="edly-kwl-configs" type="checkbox" name="show_learned_column" {% if self.show_learned_column %} checked="checked" {% endif %} style="height:20px;width:20px;">
+                        <input id="enable-learned-column" class="enable-learned-checkbox" form="kwl-configs" type="checkbox" name="show_learned_column" {% if self.show_learned_column %} checked="checked" {% endif %} style="height:20px;width:20px;">
                     </div>
                 </li>
             </ul>
