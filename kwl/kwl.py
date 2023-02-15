@@ -11,12 +11,12 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import String, Scope, Any
 
-from edly_kwl.kwl_djangoapp.utils import send_kwl_state_update_signal
-from edly_kwl.schema import CONFIG_SCHEMA
-from edly_kwl.utils import render_template, resource_string
+from kwl.kwl_djangoapp.utils import send_kwl_state_update_signal
+from kwl.schema import CONFIG_SCHEMA
+from kwl.utils import render_template, resource_string
 
 
-class EdlyKWLXBlock(XBlock):
+class KWLXBlock(XBlock):
     """
     Know Wonder Learn Activity XBlock
     """
@@ -88,7 +88,7 @@ class EdlyKWLXBlock(XBlock):
 
     def update_state(self, payload):
         try:
-            send_kwl_state_update_signal(sender=EdlyKWLXBlock, instance=self, state=payload)
+            send_kwl_state_update_signal(sender=KWLXBlock, instance=self, state=payload)
             self.runtime.publish(self, "grade", {'max_value': 1.0, 'value': 1.0})
         except MultipleInvalid as e:
             raise JsonHandlerError(500, str(e))
@@ -117,39 +117,39 @@ class EdlyKWLXBlock(XBlock):
     # Context argument is specified for xblocks, but we are not using herein
     def student_view(self, context=None):  # pylint: disable=unused-argument
         """
-        The primary view of the EdlyKWLXBlock, shown to students
+        The primary view of the KWLXBlock, shown to students
         when viewing courses.
         """
 
-        html = render_template("static/html/edly_kwl.html", {"self": self})
+        html = render_template("static/html/kwl.html", {"self": self})
         fragment = Fragment()
         fragment.add_content(html)
-        fragment.add_css(resource_string("static/css/edly_kwl.css"))
-        fragment.add_javascript(resource_string("static/js/src/edly_kwl.js"))
-        fragment.initialize_js('EdlyKWLXBlock')
+        fragment.add_css(resource_string("static/css/kwl.css"))
+        fragment.add_javascript(resource_string("static/js/src/kwl.js"))
+        fragment.initialize_js('KWLXBlock')
         return fragment
 
     def studio_view(self, context=None):  # pylint: disable=unused-argument
-        html = render_template("static/html/edly_kwl_studio.html", {"self": self})
+        html = render_template("static/html/kwl_studio.html", {"self": self})
         fragment = Fragment()
         fragment.add_content(html)
-        fragment.add_css(resource_string("static/css/edly_kwl_studio.css"))
-        fragment.add_javascript(resource_string("static/js/src/edly_kwl_studio.js"))
-        fragment.initialize_js('EdlyKWLStudioXBlock')
+        fragment.add_css(resource_string("static/css/kwl_studio.css"))
+        fragment.add_javascript(resource_string("static/js/src/kwl_studio.js"))
+        fragment.initialize_js('KWLStudioXBlock')
         return fragment
 
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("EdlyKWLXBlock",
-             """<edly_kwl/>
+            ("KWLXBlock",
+             """<kwl/>
              """),
-            ("Multiple EdlyKWLXBlock",
+            ("Multiple KWLXBlock",
              """<vertical_demo>
-                <edly_kwl/>
-                <edly_kwl/>
-                <edly_kwl/>
+                <kwl/>
+                <kwl/>
+                <kwl/>
                 </vertical_demo>
              """),
         ]
