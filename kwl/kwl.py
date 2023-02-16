@@ -69,8 +69,13 @@ class KWLXBlock(XBlock):
         return list(self.get_kel_data().filter(dropped_in='k'))
 
     def get_context_data(self):
-        return dict(knows=self.list_know_about, wonder=self.list_wonder_about, learned=self.list_learned_about,
-                    show_learned_column=self.show_learned_column, max_inputs=self.max_inputs)
+        return {
+            "knows": self.list_know_about,
+            "wonder": self.list_wonder_about,
+            "learned": self.list_learned_about,
+            "show_learned_column": self.show_learned_column,
+            "max_inputs": self.max_inputs
+        }
 
     @staticmethod
     def json_response(payload):
@@ -82,7 +87,7 @@ class KWLXBlock(XBlock):
         class CustomJSONEncoder(JSONEncoder):
             def default(self, o):
                 if isinstance(o, datetime.date):
-                    return dict(year=o.year, month=o.month, day=o.day)
+                    return {'year': o.year, 'month': o.month, 'day': o.day}
                 return o.__dict__
         return Response(CustomJSONEncoder().encode(payload), content_type='application/json', charset='UTF-8')
 
@@ -91,7 +96,7 @@ class KWLXBlock(XBlock):
             send_kwl_state_update_signal(sender=KWLXBlock, instance=self, state=payload)
             self.runtime.publish(self, "grade", {'max_value': 1.0, 'value': 1.0})
         except MultipleInvalid as e:
-            raise JsonHandlerError(500, str(e))
+            raise JsonHandlerError(500, str(e)) from e
         return self.get_context_data()
 
     @XBlock.json_handler
@@ -105,7 +110,7 @@ class KWLXBlock(XBlock):
             self.config = CONFIG_SCHEMA(config)
             self.display_name = config['kwl_display_name']
         except MultipleInvalid as e:
-            raise JsonHandlerError(500, str(e))
+            raise JsonHandlerError(500, str(e)) from e
 
         return config
 
