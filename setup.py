@@ -1,4 +1,4 @@
-"""Setup for edly_kwl XBlock."""
+"""Setup for kwl XBlock."""
 
 from __future__ import absolute_import
 
@@ -24,14 +24,14 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='edly_kwl-xblock',
-    author='Edly Enterprise',
-    version='0.1.4',
-    description='edly_kwl XBlock allows users to enter points they already know & wonder '
+    name='kwl-xblock',
+    author='Edly',
+    version='0.1.0',
+    description='kwl XBlock allows users to enter points they already know & wonder '
                 'they\'ll learn from course and validate those points at the end of the course',
     license='',
     packages=[
-        'edly_kwl',
+        'kwl',
     ],
     install_requires=[
         'XBlock',
@@ -40,8 +40,8 @@ setup(
     ],
     entry_points={
         'xblock.v1': [
-            'edly_kwl = edly_kwl:EdlyKWLXBlock',
+            'kwl = kwl:KWLXBlock',
         ]
     },
-    package_data=package_data("edly_kwl", ["static", "public"]),
+    package_data=package_data("kwl", ["static", "public"]),
 )

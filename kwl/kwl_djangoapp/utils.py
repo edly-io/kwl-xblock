@@ -1,6 +1,6 @@
 from opaque_keys.edx.keys import CourseKey
 
-from edly_kwl.kwl_djangoapp.signal import store_kwl_signal
+from kwl.kwl_djangoapp.signal import store_kwl_signal
 
 
 def send_kwl_state_update_signal(sender, instance, state):
