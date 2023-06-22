@@ -35,7 +35,7 @@ setup(
     ],
     install_requires=[
         'XBlock',
-        'voluptuous==0.11.7',
+        'voluptuous==0.12.0',
         'web-fragments==0.3.2',
     ],
     entry_points={
