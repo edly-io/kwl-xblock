@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def package_data(pkg, roots):
@@ -26,13 +26,11 @@ def package_data(pkg, roots):
 setup(
     name='kwl-xblock',
     author='Edly',
-    version='0.1.0',
+    version='1.0.1',
     description='kwl XBlock allows users to enter points they already know & wonder '
                 'they\'ll learn from course and validate those points at the end of the course',
     license='',
-    packages=[
-        'kwl',
-    ],
+    packages=find_packages(),
     install_requires=[
         'XBlock',
         'voluptuous==0.12.0',

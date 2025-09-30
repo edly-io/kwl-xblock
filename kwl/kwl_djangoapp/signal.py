@@ -1,7 +1,9 @@
 from django.apps import apps
 from django.dispatch import Signal
 
-store_kwl_signal = Signal(providing_args=['scope_id', 'user', 'state', 'course_id'])
+store_kwl_signal = Signal(
+    ['scope_id', 'user', 'state', 'course_id'],
+)
 
 
 def store_kwl_handler(sender, **kwargs):  # pylint: disable=unused-argument
